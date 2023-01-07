@@ -1,3 +1,10 @@
+:root {
+    --red: #F25D5D;
+    --pink: #FFCFEC;
+    --green: #8CCEBE;
+    --blue: #5482B9;
+}
+
 * {
     text-align: center;
     text-decoration: none;
@@ -5,14 +12,14 @@
     outline: none;
 }
 
-html, body {
-    box-sizing: border-box;
-    height: 100%;
-}
+html, body { box-sizing: border-box; height: 100%; }
 
-h3 {
-    writing-mode: vertical-lr;
-}
+@font-face { font-family: Kaiun; src: url("fonts/kaiun421.ttf"); }
+@font-face { font-family: ZenMaruGothic; src: url("fonts/ZenMaruGothic-Regular.ttf"); }
+
+h2 { font-family: Kaiun; font-size: 28px; margin: 10px 0; }
+h3 { font-family: Kaiun; font-size: 20px; writing-mode: vertical-lr; }
+p { font-family: ZenMaruGothic; text-align: left; }
 
 .center-row {
     display: flex;

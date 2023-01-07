@@ -5,28 +5,35 @@
 }
 
 .memo {
-    background-color: magenta;
+    background-color:#F2F2F2;
     width: 0px;
-    height: 460px;
+    height: 606px;
     padding: 20px 0px;
     overflow: hidden;
     transition: 1s;
+
+    border-radius: 10px;
 }
 
-.memo-content { min-width: 350px; }
+.memo-content { min-width: 450px; }
 
 .tab {
-    background-color: gold;
-    min-width: 50px;
-    width: 50px; height: 500px;
-    border-style: none solid none none;
-    border-color: black; border-width: 4px;
+    background-color: #F2F2F2;
+    padding: 20px 10px;
+    height: 600px;
+    margin-right: 5px;
+    border-radius: 10px;
+    border: 3px solid #E1E1E1;
     overflow: hidden;
-    transition: 1s;
+    transition: 0.5s;
+
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
 }
 
-.tab-heading { width: 50px; }
-
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 760px) {
     #memo-container { flex-direction: column; }
+    .tab { height: 300px; }
 }
