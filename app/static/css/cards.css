@@ -1,0 +1,32 @@
+#memo-container {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.memo {
+    background-color: magenta;
+    width: 0px;
+    height: 460px;
+    padding: 20px 0px;
+    overflow: hidden;
+    transition: 1s;
+}
+
+.memo-content { min-width: 350px; }
+
+.tab {
+    background-color: gold;
+    min-width: 50px;
+    width: 50px; height: 500px;
+    border-style: none solid none none;
+    border-color: black; border-width: 4px;
+    overflow: hidden;
+    transition: 1s;
+}
+
+.tab-heading { width: 50px; }
+
+@media only screen and (max-width: 650px) {
+    #memo-container { flex-direction: column; }
+}
