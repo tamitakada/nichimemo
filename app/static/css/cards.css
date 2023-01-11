@@ -5,7 +5,7 @@
 }
 
 .memo {
-    background-color:#F2F2F2;
+    background-color: var(--lightNavy);
     width: 0px;
     height: 606px;
     padding: 20px 0px;
@@ -18,12 +18,13 @@
 .memo-content { min-width: 450px; }
 
 .tab {
-    background-color: #F2F2F2;
+    background-color: var(--navy);
     padding: 20px 10px;
+    min-width: 30px;
     height: 600px;
-    margin-right: 5px;
+    margin-right: 15px;
     border-radius: 10px;
-    border: 3px solid #E1E1E1;
+    border: 3px solid var(--sea);
     overflow: hidden;
     transition: 0.5s;
 

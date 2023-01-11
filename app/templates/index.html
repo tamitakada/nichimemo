@@ -2,42 +2,50 @@
 
 {% block content %}
 
-<h1>日メモ</h1>
+<img src="{{ url_for('static', filename='images/nichimemo-title.svg') }}" style="width: 100px;" />
+<p style="padding-top: 10px; padding-left: 10px; opacity: 40%; font-size: 12px; letter-spacing: 10px; text-align: center;">常灯日本史メモ</p>
 
+<form style="margin: 20px 0;" action="/search" >
+    <input type="text" placeholder="時代・人物・歴史出来事などを検索" autocomplete="off" name="q" {% if query|length > 0 %} value="{{ query }}" {% endif %} >
+</form>
+
+{% if memos|length > 0 %}
 <div id="memo-container">
-    <div class="flex-row" style="flex: 2; justify-content: end; align-items: stretch;">
+    <div class="flex-row" style="padding: 10px 0; flex: 2; justify-content: end; align-items: stretch;">
         <div class="memo" style="width: 450px; padding: 20px;">
             <div class="memo-content">
-                <h2>池田屋事件</h2>
-                <p>新撰組大活躍! 近藤勇、沖田総司、永倉新八、藤堂平助、近藤周助の僅か5人で池田屋に潜んでいた30人余りの尊攘兵士を圧倒!</p>
+                <h2>{{ memos[0]["title"] }}</h2>
+                <p>{{ memos[0]["markup"] }}</p>
             </div>
         </div>
+        {% for memo in memos %}
+        {% if loop.index > 1 %}
         <div class="memo">
             <div class="memo-content">
-                <h2>油小路事件</h2>
+                <h2>{{ memo["title"] }}</h2>
+                <p>{{ memo["markup"] }}</p>
             </div>
         </div>
-        <div class="memo">
-            <div class="memo-content">
-                <h2>禁門の変</h2>
-            </div>
-        </div>
-        <div class="memo">
-            <div class="memo-content">
-                <h2>鳥羽・伏見の戦い</h2>
-            </div>
-        </div>
+        {% endif %}
+        {% endfor %}
     </div>
 
-    <div class="flex-row" style="justify-content: start; overflow: auto; flex: 1;">
-        <div class="tab" style="margin-left: 5px;"><h3>池田屋事件</h3></div>
-        <div class="tab"><h3>禁門の変</h3></div>
-        <div class="tab"><h3>油小路事件</h3></div>
-        <div class="tab"><h3>鳥羽・伏見の戦い</h3></div>
-    </div>    
+    <div class="flex-row" style="padding: 10px 0; justify-content: start; overflow: auto; flex: 1;">
+        <div class="tab" style="margin-left: 15px; border: 3px solid var(--navy); background-color: {{ memos[0]['era_color'] }}; box-shadow: 0 0 10px {{ memos[0]['era_color'] }};">
+            <h3>{{ memos[0]["title"] }}</h3>
+        </div>
+        {% for memo in memos %}
+        {% if loop.index > 1 %}
+        <div class="tab" style="color: {{ memo['era_color'] }}; border-color: {{ memo['era_color'] }};">
+            <h3>{{ memo["title"] }}</h3>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div> 
         
 </div>
 
 <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
 
+{% endif %}
 {% endblock %}

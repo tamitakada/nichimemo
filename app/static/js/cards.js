@@ -1,17 +1,24 @@
 const tabs = document.getElementsByClassName("tab");
 const memo = document.getElementsByClassName("memo");
 
+let currentTabColor = tabs[0].style.backgroundColor;
 let currentTabIndex = 0;
 
 function openNewTab(index) {
-    tabs[currentTabIndex].style.backgroundColor = "#F2F2F2";
-    tabs[currentTabIndex].style.borderColor = "#E1E1E1";
+    tabs[currentTabIndex].style.backgroundColor = "var(--navy)";
+    tabs[currentTabIndex].style.borderColor = currentTabColor;
+    tabs[currentTabIndex].style.color = currentTabColor;
+    tabs[currentTabIndex].style.boxShadow = "none";
 
     memo[currentTabIndex].style.width = "0px";
     memo[currentTabIndex].style.padding = "20px 0px";
 
-    tabs[index].style.backgroundColor = "var(--green)";
-    tabs[index].style.borderColor = "#4CB39A";
+    currentTabColor = tabs[index].style.color;
+
+    tabs[index].style.backgroundColor = currentTabColor;
+    tabs[index].style.borderColor = "var(--navy)";
+    tabs[index].style.color = "var(--navy)";
+    tabs[index].style.boxShadow = `0 0 10px ${currentTabColor}`;
 
     if (window.matchMedia("(max-width: 760px)").matches) {
         memo[index].style.width = "100%";

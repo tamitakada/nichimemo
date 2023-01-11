@@ -1,8 +1,11 @@
 :root {
+    --navy: #29334E;
+    --lightNavy: #384669;
+    --ice: #BADDE8;
+    --sea: #3AE9BF;
+    --lime: #89F71B;
+    --sun: #F6E43C;
     --red: #F25D5D;
-    --pink: #FFCFEC;
-    --green: #8CCEBE;
-    --blue: #5482B9;
 }
 
 * {
@@ -12,14 +15,35 @@
     outline: none;
 }
 
-html, body { box-sizing: border-box; height: 100%; }
+html, body { box-sizing: border-box; height: 100%; background-color: var(--navy); }
 
-@font-face { font-family: Kaiun; src: url("fonts/kaiun421.ttf"); }
-@font-face { font-family: ZenMaruGothic; src: url("fonts/ZenMaruGothic-Regular.ttf"); }
+@font-face { font-family: Hina; src: url("fonts/HinaMincho-Regular.ttf"); }
 
-h2 { font-family: Kaiun; font-size: 28px; margin: 10px 0; }
-h3 { font-family: Kaiun; font-size: 20px; writing-mode: vertical-lr; }
-p { font-family: ZenMaruGothic; text-align: left; }
+h2 { font-family: Hina; font-size: 28px; margin: 10px 0; color: white; }
+h3 { font-family: Hina; font-size: 20px; writing-mode: vertical-lr; }
+p { font-family: Hina; text-align: left; color: white; }
+
+input {
+    width: 80vw;
+    max-width: 600px;
+    padding: 10px 0;
+
+    background-color: var(--navy);
+
+    border-style: none none solid none;
+    border-width: 3px;
+    border-color: var(--lightNavy);
+
+    font-family: Hina;
+    font-size: 20px;
+    color: white;
+    text-align: left;
+}
+
+input::placeholder {
+    color: white;
+    text-shadow: 0 0 5px white;
+}
 
 .center-row {
     display: flex;
