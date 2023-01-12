@@ -36,10 +36,22 @@
                         {% else %}<li>{% endif %}
                         {% else %}<li>{% endif %}
                         {% for component in line %}
-                            {% if "tooltip" in component.keys() and component["tooltip"]|length > 0 %}
-                            <p class="memo-line-with-tooltip" style="display: inline; {{ component['style'] }}" data-tooltip="{{ component['tooltip'] }}">{{ component['text'] }}</p>
+                            {% if "furigana" in component.keys() and component["furigana"]|length > 0 %}
+                            <ruby
+                                {% if "tooltip" in component.keys() and component["tooltip"]|length > 0 %}
+                                class="memo-line-with-tooltip" 
+                                data-tooltip="{{ component['tooltip'] }}"
+                                {% endif %}
+                                style="display: inline; {{ component['style'] }}" 
+                            >{{ component['text'] }}<rt>{{ component['furigana'] }}</rt></ruby>
                             {% else %}
-                            <p style="display: inline; {{ component['style'] }}" >{{ component['text'] }}</p>
+                            <p
+                                {% if "tooltip" in component.keys() and component["tooltip"]|length > 0 %}
+                                class="memo-line-with-tooltip" 
+                                data-tooltip="{{ component['tooltip'] }}"
+                                {% endif %}
+                                style="display: inline; {{ component['style'] }}"
+                            >{{ component['text'] }}</p>
                             {% endif %}
                         {% endfor %}
                         {% if line|length > 0 and "tag_type" in line[0].keys() %}

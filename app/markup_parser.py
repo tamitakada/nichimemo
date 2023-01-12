@@ -83,6 +83,8 @@ def convert_options_to_style(options: dict):
     
     if "tt" in options.keys() and options["tt"]: style["tooltip"] = options["tt"]
     elif "a" in options.keys() and options["a"]: style["link"] = options["a"]
+    
+    if "f" in options.keys() and options["f"]: style["furigana"] = options["f"]
 
     return style
 
@@ -133,6 +135,7 @@ def parse_lines_with_options(line: str):
                 components[component_index]["style"] = style["style"]
                 if "tooltip" in style: components[component_index]["tooltip"] = style["tooltip"]
                 if "link" in style: components[component_index]["link"] = style["link"]
+                if "furigana" in style: components[component_index]["furigana"] = style["furigana"]
             elif option_key_search: option_key += c
             elif option_value_search: option_value += c
         else:
