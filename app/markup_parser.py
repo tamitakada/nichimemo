@@ -1,13 +1,26 @@
-# Adds ui info to memo dicts based on memo info
-from tracemalloc import start
-
+import json
 
 def get_markup_data(memos):
     for memo in memos:
+        if "images" in memo:
+            memo["image_data"] = get_image_data(memo["images"])
+
         memo["era_color"] = get_color_for_era(memo["era"], memo["time_period"])
         memo["citations_text"] = memo["citations"].split(",")
         memo["markup_text"] = get_markup_text(memo["markup"])
     return memos
+
+def get_image_data(images: str):
+    all_images = {} # paragraph number : [image data]
+    for image in images.split(" "):
+        image_data = json.loads(image)
+
+        paragraph = 0
+        if "p_number" in image_data: paragraph = image_data["p_number"]
+
+        if paragraph in all_images: all_images[paragraph].append(image_data)
+        else: all_images[paragraph] = [image_data]
+    return all_images
 
 def get_color_for_era(era: str, time_period: str):
     eras = {
