@@ -1,0 +1,68 @@
+JOTO FILE GUIDELINES
+
+1. Only accepts .txt files
+2. Body text must follow JOTO MARKUP GUIDELINES outlined below JOTO FILE GUIDELINES
+3. Meta data must be included BEFORE body text
+4. Include THREE newlines ("\n\n\n") between meta data and body text
+5. Meta data must be formatted as follows:
+	LINE 1		Title
+	LINE 2		Era (With 時代 suffix)
+			  Possible values:
+			  旧石器時代
+			  縄文時代, 弥生時代, 古墳時代　
+			  飛鳥時代, 奈良時代, 平安時代
+			  鎌倉時代, 南北朝時代, 室町時代
+			  戦国時代, 江戸時代, 幕末
+			  明治時代, 大正時代, 昭和時代（戦前）, 第二次世界大戦
+			  昭和時代（戦後）, 平成時代
+	LINE 3		Time period (English format; full years required)
+			  e.g. 1940-1945, 12000BC-100, 2004
+	LINE 4		Images (JSON str)
+			  e.g. {"image_path": "edo/kasei/art.png", "caption": "art!", "p_number": 2, "side": "r"}
+			  KEYS			VALUES
+			  image_path		path to image as string
+			  caption		image caption string
+			  p_number		paragraph number to place image next to
+			  side			r	right
+						l	left
+						which side to place image on
+	LINE 5		Citations
+			  Format: Name Title Publisher、Published year Page numbers
+			    e.g. 山本博文 『〔東大流〕 流れをつかむ すごい！ 日本史講義』 PHP研究所、二〇二〇年 p. 21-30
+			  - Separate multiple citations with commas (",")
+			  - ALWAYS ADD PAGE NUMBERS
+
+JOTO MARKUP GUIDELINES
+
+/n			Separates each bullet point.
+/n/n			Separates paragraphs.
+
+(H)			Non-bullet, heading entry. Limited to use in first line of paragraph.
+
+(B)options		Wrap paragraph in box. Limited to use in first line of paragraph.
+
+			options - box style - [DEFAULT] var(--sea)
+			e.g. {c:green}
+
+			KEYS		VALUES
+			c		any valid CSS color option
+
+<options{text}>		Apply text decorations.
+		
+			options - text decoration JSON string, NO SPACES
+			e.g. {dt:h,c:var(--sea),tt:f}
+		
+			KEYS		VALUES				NOTES
+			dt		h	highlight
+					g	glow
+					c	color
+					n	none [DEFAULT]
+		
+			c		any valid CSS color option
+					transparent [DEFAULT]
+
+			tt		tooltip string			If tt is set, a will be ignored.
+					[DEFAULT empty]
+
+			a		href value			If tt is set, a will be ignored.
+					[DEFAULT empty]
