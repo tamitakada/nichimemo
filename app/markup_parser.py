@@ -5,6 +5,7 @@ from tracemalloc import start
 def get_markup_data(memos):
     for memo in memos:
         memo["era_color"] = get_color_for_era(memo["era"], memo["time_period"])
+        memo["citations_text"] = memo["citations"].split(",")
         memo["markup_text"] = get_markup_text(memo["markup"])
     return memos
 
@@ -68,9 +69,9 @@ def convert_options_to_style(options: dict):
     style = {"style": ""}
 
     dt_option_style_dict = {
-        "h": "padding: 0 5px; color: var(--navy); background-color: ",
-        "g": "text-shadow: 0 0 5px ",
-        "c": "color: ",
+        "h": "padding: 0 5px; color: var(--navy); background-color: [c];",
+        "g": "text-shadow: 0 0 1.5px [c], 0 0 7px [c]; color: [c];",
+        "c": "color: [c];",
         "": ""
     }
 
@@ -78,7 +79,7 @@ def convert_options_to_style(options: dict):
     if "c" in options: color = options["c"]
 
     if "dt" in options.keys() and options["dt"]:
-        style["style"] += dt_option_style_dict[options["dt"]] + color + ";"
+        style["style"] += dt_option_style_dict[options["dt"]].replace("[c]", color)
     
     if "tt" in options.keys() and options["tt"]: style["tooltip"] = options["tt"]
     elif "a" in options.keys() and options["a"]: style["link"] = options["a"]

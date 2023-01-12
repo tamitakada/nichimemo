@@ -4,19 +4,30 @@
     align-items: stretch;
 }
 
+.page-container {
+    width: 0;
+    overflow: hidden;
+}
+
+.page {
+    width: 0;
+    height: 606px;
+    position: relative; 
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 1s;
+}
+
 .memo {
     background-color: var(--lightNavy);
-    width: 0px;
-    height: 606px;
-    padding: 20px 0px;
     overflow-x: hidden;
     overflow-y: scroll;
     transition: 1s;
-
-    border-radius: 10px;
 }
 
-.memo-content { min-width: 100px; }
+.memo-content, .citation { 
+    min-width: 410px;
+}
 
 .tab {
     background-color: var(--navy);
@@ -65,7 +76,20 @@
 
 .memo-line-with-tooltip:hover::after { opacity: 1; }
 
+.memo-tab {
+    line-height: 26px; 
+    vertical-align: middle; 
+    padding: 0 10px; 
+    margin-bottom: 10px; margin-right: 10px;
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    font-family: Hina;
+    transition: 0.5s;
+}
+
 @media only screen and (max-width: 760px) {
     #memo-container { flex-direction: column; }
+    .memo-content, .citation { min-width: calc(100vw - 80px); }
     .tab { height: 300px; }
 }

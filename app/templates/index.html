@@ -11,59 +11,68 @@
 
 {% if memos|length > 0 %}
 <div id="memo-container">
-    <div class="flex-row" style="padding: 10px 0; flex: 2; justify-content: end; align-items: stretch;">
-        <div class="memo" style="width: 450px; padding: 20px;">
-            <div class="memo-content">
-                <h2>{{ memos[0]["title"] }}</h2>
-                {% for paragraph in memos[0]["markup_text"] %}
-                {% if paragraph[0] == "b" %}
-                    {% if loop.index == memos[0]["markup_text"]|length %}
-                    <div class="memo-box" style="margin-bottom: 0; background-color: {{ paragraph[1][0][0]['box_color'] }};">
-                    {% else %}
+    <div class="flex-col page-container" style="flex: 2; align-items: stretch; width: 100%;">
+        <div class="flex-row" style="height: 40px; align-items: stretch; justify-content: end;">
+            <button class="memo-tab" onclick="openMemoTab()" style="border-color: var(--lightNavy); background-color: var(--lightNavy); color: white;">メモ</button>
+            <button class="memo-tab" onclick="openCitationsTab()" style="border-color: var(--red); background-color: var(--navy); color: var(--red);">参考文献</button>
+        </div>
+        <div class="flex-row" style="padding: 10px 0; justify-content: end;">
+        {% for memo in memos %}
+        <div class="page" {% if loop.index == 1 %}style="width: 450px;"{% endif %}>
+            <div class="memo" style="width: 100%; height: 100%; z-index: 2; position: absolute; top: 0; left: 0;">
+                <div class="memo-content" style="padding: 20px;">
+                    <h2>{{ memo["title"] }}</h2>
+                    {% for paragraph in memo["markup_text"] %}
+
+                    {% if paragraph[0] == "b" %}
                     <div class="memo-box" style="background-color: {{ paragraph[1][0][0]['box_color'] }};">
                     {% endif %}
-                {% endif %}
-                
-                <ul>
-                {% for line in paragraph[1] %}
-                    {% if paragraph[0] != "b" or loop.index > 1 %}
-                    {% if line|length > 0 and "tag_type" in line[0].keys() %}
-                    {% if line[0]["tag_type"] == "p" %}<div style="padding: 10px 0;">
-                    {% else %}<li>{% endif %}
-                    {% else %}<li>{% endif %}
-                    {% for component in line %}
-                        {% if "tooltip" in component.keys() and component["tooltip"]|length > 0 %}
-                        <p class="memo-line-with-tooltip" style="display: inline; {{ component['style'] }}" data-tooltip="{{ component['tooltip'] }}">{{ component['text'] }}</p>
-                        {% else %}
-                        <p style="display: inline; {{ component['style'] }}" >{{ component['text'] }}</p>
+                    
+                    <ul>
+                    {% for line in paragraph[1] %}
+                        {% if paragraph[0] != "b" or loop.index > 1 %}
+                        {% if line|length > 0 and "tag_type" in line[0].keys() %}
+                        {% if line[0]["tag_type"] == "p" %}<div style="padding: 10px 0;">
+                        {% else %}<li>{% endif %}
+                        {% else %}<li>{% endif %}
+                        {% for component in line %}
+                            {% if "tooltip" in component.keys() and component["tooltip"]|length > 0 %}
+                            <p class="memo-line-with-tooltip" style="display: inline; {{ component['style'] }}" data-tooltip="{{ component['tooltip'] }}">{{ component['text'] }}</p>
+                            {% else %}
+                            <p style="display: inline; {{ component['style'] }}" >{{ component['text'] }}</p>
+                            {% endif %}
+                        {% endfor %}
+                        {% if line|length > 0 and "tag_type" in line[0].keys() %}
+                        {% if line[0]["tag_type"] == "p" %}</div>
+                        {% else %}</li>{% endif %}
+                        {% else %}</li>{% endif %}
                         {% endif %}
                     {% endfor %}
-                    {% if line|length > 0 and "tag_type" in line[0].keys() %}
-                    {% if line[0]["tag_type"] == "p" %}</div>
-                    {% else %}</li>{% endif %}
-                    {% else %}</li>{% endif %}
-                    {% endif %}
-                {% endfor %}
-                </ul>
+                    </ul>
 
-                {% if paragraph[0] == "b" %}</div>{% endif %}
-                {% endfor %}
+                    {% if paragraph[0] == "b" %}</div>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div style="background-color: var(--red); width: 100%; height: 100%; z-index: 1; position: absolute; top: 0; left: 0;">
+                <div class="citation" style="padding: 20px;">
+                    <h2 style="margin-bottom: 20px; color: var(--navy);">参考文献</h2>
+                    <ul>
+                    {% for citation in memo["citations_text"] %}
+                        <li style="color: var(--navy); font-family: Hina;">
+                            {{ citation }}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
-        {% for memo in memos %}
-        {% if loop.index > 1 %}
-        <div class="memo">
-            <div class="memo-content">
-                <h2>{{ memo["title"] }}</h2>
-                <p>{{ memo["markup"] }}</p>
-            </div>
-        </div>
-        {% endif %}
         {% endfor %}
+        </div>
     </div>
 
     <div class="flex-row" style="padding: 10px 0; justify-content: start; overflow: auto; flex: 1;">
-        <div class="tab" style="margin-left: 15px; border: 3px solid var(--navy); background-color: {{ memos[0]['era_color'] }}; box-shadow: 0 0 10px {{ memos[0]['era_color'] }};">
+        <div class="tab" style="color: var(--navy); margin-left: 15px; border: 3px solid var(--navy); background-color: {{ memos[0]['era_color'] }}; box-shadow: 0 0 10px {{ memos[0]['era_color'] }};">
             <h3>{{ memos[0]["title"] }}</h3>
         </div>
         {% for memo in memos %}
@@ -74,7 +83,6 @@
         {% endif %}
         {% endfor %}
     </div> 
-        
 </div>
 
 <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
