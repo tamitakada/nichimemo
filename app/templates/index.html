@@ -15,7 +15,39 @@
         <div class="memo" style="width: 450px; padding: 20px;">
             <div class="memo-content">
                 <h2>{{ memos[0]["title"] }}</h2>
-                <p>{{ memos[0]["markup"] }}</p>
+                {% for paragraph in memos[0]["markup_text"] %}
+                {% if paragraph[0] == "b" %}
+                    {% if loop.index == memos[0]["markup_text"]|length %}
+                    <div class="memo-box" style="margin-bottom: 0; background-color: {{ paragraph[1][0][0]['box_color'] }};">
+                    {% else %}
+                    <div class="memo-box" style="background-color: {{ paragraph[1][0][0]['box_color'] }};">
+                    {% endif %}
+                {% endif %}
+                
+                <ul>
+                {% for line in paragraph[1] %}
+                    {% if paragraph[0] != "b" or loop.index > 1 %}
+                    {% if line|length > 0 and "tag_type" in line[0].keys() %}
+                    {% if line[0]["tag_type"] == "p" %}<div style="padding: 10px 0;">
+                    {% else %}<li>{% endif %}
+                    {% else %}<li>{% endif %}
+                    {% for component in line %}
+                        {% if "tooltip" in component.keys() and component["tooltip"]|length > 0 %}
+                        <p class="memo-line-with-tooltip" style="display: inline; {{ component['style'] }}" data-tooltip="{{ component['tooltip'] }}">{{ component['text'] }}</p>
+                        {% else %}
+                        <p style="display: inline; {{ component['style'] }}" >{{ component['text'] }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% if line|length > 0 and "tag_type" in line[0].keys() %}
+                    {% if line[0]["tag_type"] == "p" %}</div>
+                    {% else %}</li>{% endif %}
+                    {% else %}</li>{% endif %}
+                    {% endif %}
+                {% endfor %}
+                </ul>
+
+                {% if paragraph[0] == "b" %}</div>{% endif %}
+                {% endfor %}
             </div>
         </div>
         {% for memo in memos %}

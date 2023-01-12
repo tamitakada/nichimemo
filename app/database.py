@@ -12,6 +12,7 @@ def get_db():
     markup - memo body (in joto markup)
     era - kofun, asuka, taisho, etc.
     time_period - 1940-1945, 12000BC-8000BC, 1211, etc. [English format; full years required]
+    citations - str, separated by commas
     last_edit_date - e.g. 2023-01-11
     images - JSON str - {'image_path': 'edo/kasei/art.png', 'caption': 'art!', 'p_number': 2, 'side': 'r'}
         * p-number specifies paragraph number to place image next to
@@ -27,6 +28,7 @@ def db_setup():
         markup          LONGTEXT NOT NULL,
         era             TEXT NOT NULL,
         time_period     TEXT NOT NULL,
+        citations       TEXT NOT NULL,
         last_edit_date  DATE NOT NULL,
         images          TEXT
     );"""
@@ -53,7 +55,7 @@ def generate_unique_id():
     Returns 1 if memo is found and edited.
     Returns 0 if memo with specified id is not found.
 """
-def edit_memo(id: int, title="", markup="", era="", time_period="", images=""):
+def edit_memo(id: int, title="", markup="", era="", time_period="", citations="", images=""):
     memo = find_memo_by_id(id)
     if memo:
         db = get_db()
@@ -64,6 +66,7 @@ def edit_memo(id: int, title="", markup="", era="", time_period="", images=""):
             "markup": markup, 
             "era": era, 
             "time_period": time_period,
+            "citations": citations,
             "images": images
         }
 
@@ -76,6 +79,7 @@ def edit_memo(id: int, title="", markup="", era="", time_period="", images=""):
                 markup = ?, 
                 era = ?, 
                 time_period = ?, 
+                citations = ?,
                 last_edit_date = ?, 
                 images = ? 
             WHERE id = ?;
@@ -88,6 +92,7 @@ def edit_memo(id: int, title="", markup="", era="", time_period="", images=""):
                 updated_info["markup"], 
                 updated_info["era"], 
                 updated_info["time_period"],
+                updated_info["citations"],
                 date.today(),
                 updated_info["images"], 
                 id
@@ -100,16 +105,16 @@ def edit_memo(id: int, title="", markup="", era="", time_period="", images=""):
         return 1
     return 0
 
-def add_memo(title: str, markup: str, era: str, time_period: str, images=""):
+def add_memo(title: str, markup: str, era: str, time_period: str, citations: str, images=""):
     db = get_db()
     c = db.cursor()
 
     id = generate_unique_id()
 
     command = """INSERT INTO memos 
-        (id, title, markup, era, time_period, last_edit_date, images) 
-        VALUES (?, ?, ?, ?, ?, ?, ?);"""
-    c.execute(command, (id, title, markup, era, time_period, date.today(), images))
+        (id, title, markup, era, time_period, citations, last_edit_date, images) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);"""
+    c.execute(command, (id, title, markup, era, time_period, citations, date.today(), images))
 
     db.commit()
     db.close()
@@ -134,9 +139,10 @@ def memo_tuple_to_dict(memo):
             "markup": memo[2],
             "era": memo[3],
             "time_period": memo[4],
-            "last_edit_date": memo[5]
+            "citations": memo[5],
+            "last_edit_date": memo[6]
         }
-        if memo[6] and len(memo[6]) > 0: memo_dict["images"] = memo[6]
+        if memo[7] and len(memo[7]) > 0: memo_dict["images"] = memo[7]
         return memo_dict
     else: return None
 
@@ -144,7 +150,7 @@ def get_random_memos():
     db = get_db()
     c = db.cursor()
 
-    command = "SELECT * FROM memos ORDER BY RANDOM() LIMIT 3"
+    command = "SELECT * FROM memos ORDER BY RANDOM() LIMIT 1"
     memos = c.execute(command).fetchall()
 
     db.close()
