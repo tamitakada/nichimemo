@@ -30,14 +30,13 @@ html, body { box-sizing: border-box; height: 100%; background-color: var(--navy)
 
 h2 { font-family: Hina; font-size: 28px; margin: 10px 0; color: white; }
 h3 { font-family: Hina; font-size: 20px; writing-mode: vertical-lr; }
-p, ruby { font-family: Hina; text-align: left; color: white; padding: 0; margin: 0; }
+p, ruby { font-family: Hina; text-align: left; padding: 0; margin: 0; }
 ul { list-style-image: url("arrow-bullet.svg"); }
 li { text-align: left; }
 
 ul { list-style: none; }
 ul li::before {
     content: "\2022";
-    color: white;
     font-weight: bold;
     width: 1em;
     display: inline-block;

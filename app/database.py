@@ -70,11 +70,11 @@ def edit_memo(id: int, title="", markup="", era="", time_period="", citations=""
             "images": images
         }
 
-        for key in updated_info.keys:
-            if key in memo.keys and not updated_info[key]:
+        for key in updated_info.keys():
+            if key in memo.keys() and not updated_info[key]:
                 updated_info[key] = memo[key]
         
-        command = """UPDATE memo
+        command = """UPDATE memos
             SET title = ?, 
                 markup = ?, 
                 era = ?, 
@@ -117,6 +117,15 @@ def add_memo(title: str, markup: str, era: str, time_period: str, citations: str
     c.execute(command, (id, title, markup, era, time_period, citations, date.today(), images))
 
     db.commit()
+    db.close()
+
+def delete_memo(id: int):
+    db = get_db()
+    c = db.cursor()
+
+    command = "DELETE FROM memos WHERE id = ?"
+    c.execute(command, (id,))
+
     db.close()
 
 def find_memo_by_id(id: int):

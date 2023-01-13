@@ -27,7 +27,7 @@ function openNewTab(index) {
 
     if (window.matchMedia("(max-width: 760px)").matches) {
         pages[index].style.width = "100%";
-    } else { pages[index].style.width = "450px"; }
+    } else { pages[index].style.width = "550px"; }
 
     currentTabIndex = index;
 
@@ -67,7 +67,7 @@ function openMemoTab() {
 function adjustPageSize() {
     if (window.matchMedia("(max-width: 760px)").matches) {
         pages[currentTabIndex].style.width = "100%";
-    } else { pages[currentTabIndex].style.width = "450px"; }
+    } else { pages[currentTabIndex].style.width = "550px"; }
 }
 
 window.addEventListener("resize", adjustPageSize, true);

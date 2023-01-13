@@ -18,58 +18,55 @@
         </div>
         <div class="flex-row" style="padding: 10px 0; justify-content: end;">
         {% for memo in memos %}
-        <div class="page" {% if loop.index == 1 %}style="width: 450px;"{% endif %}>
+        <div class="page" {% if loop.index == 1 %}style="width: 550px;"{% endif %}>
             <div class="memo" style="width: 100%; height: 100%; z-index: 2; position: absolute; top: 0; left: 0;">
                 <div class="memo-content" style="padding: 20px;">
                     <h2>{{ memo["title"] }}</h2>
                     {% for paragraph in memo["markup_text"] %}
 
-                    <div
-                        {% if paragraph[0] == "b" %}
-                        class="memo-box" style="background-color: {{ paragraph[1][0][0]['box_color'] }};"
-                        {% endif %}
-                    >
+                    <div style="padding-bottom: 15px; {{ paragraph['style'] }}">
                         <ul>
-                        {% for line in paragraph[1] %}
-                            {% if paragraph[0] != "b" or loop.index > 1 %}
-                            {% if line|length > 0 and "tag_type" in line[0].keys() %}
-                            {% if line[0]["tag_type"] == "p" %}<div style="padding: 10px 0;">
+                        {% for line in paragraph['lines'] %}
+                            {% if "tag_type" in line["data"].keys() and line["data"]["tag_type"] == "t" %}
+                            <div style="text-align: left; {{ line['data']['style'] }}">
                             {% else %}<li>{% endif %}
-                            {% else %}<li>{% endif %}
-                            {% for component in line %}
-                                {% if "furigana" in component.keys() and component["furigana"]|length > 0 %}
+                            {% for component in line["components"] %}
+                                {% if "furigana" in component["data"].keys() and component["data"]["furigana"]|length > 0 %}
                                 <ruby
-                                    {% if "tooltip" in component.keys() and component["tooltip"]|length > 0 %}
+                                    {% if "tooltip" in component["data"].keys() and component["data"]["tooltip"]|length > 0 %}
                                     class="memo-line-with-tooltip" 
-                                    data-tooltip="{{ component['tooltip'] }}"
+                                    data-tooltip="{{ component['data']['tooltip'] }}"
                                     {% endif %}
-                                    style="display: inline; {{ component['style'] }}" 
-                                >{{ component['text'] }}<rt>{{ component['furigana'] }}</rt></ruby>
+                                    style="display: inline; {{ component['data']['style'] }}" 
+                                >{{ component['text'] }}<rt>{{ component['data']['furigana'] }}</rt></ruby>
                                 {% else %}
                                 <p
-                                    {% if "tooltip" in component.keys() and component["tooltip"]|length > 0 %}
+                                    {% if "tooltip" in component["data"].keys() and component["data"]["tooltip"]|length > 0 %}
                                     class="memo-line-with-tooltip" 
-                                    data-tooltip="{{ component['tooltip'] }}"
+                                    data-tooltip="{{ component['data']['tooltip'] }}"
                                     {% endif %}
-                                    style="display: inline; {{ component['style'] }}"
+                                    style="display: inline; {{ component['data']['style'] }}"
                                 >{{ component['text'] }}</p>
                                 {% endif %}
                             {% endfor %}
-                            {% if line|length > 0 and "tag_type" in line[0].keys() %}
-                            {% if line[0]["tag_type"] == "p" %}</div>
+                            {% if "tag_type" in line["data"].keys() and line["data"]["tag_type"] == "t" %}
+                            </div>
                             {% else %}</li>{% endif %}
-                            {% else %}</li>{% endif %}
-                            {% endif %}
                         {% endfor %}
                         </ul>
 
                         {% if "image_data" in memo.keys() and (loop.index - 1) in memo["image_data"].keys()  %}
-                        <div class="flex-row" style="padding-top: 10px; padding-bottom: 10px;">
+                        <div class="flex-row" style="padding-top: 10px; justify-content: space-around;">
                         {% for image in memo["image_data"][loop.index - 1] %}
-                        <img  
-                            src="{{ url_for('static', filename='images/' + image['image_path']) }}" 
-                            style="border-radius: 10px; max-width: 100%; max-height: 200px; object-fit: contain;"
-                        />
+                        <div class="flex-col" style="max-width: 100%; padding: 0 5px;">
+                            <img 
+                                src="{{ url_for('static', filename='images/' + image['image_path']) }}"
+                                style="max-height: 200px; max-width: 100%; border-radius: 10px 10px 0 0;"
+                            />
+                            <div style="background-color: var(--red); padding: 5px; border-radius: 0 0 10px 10px;">
+                                <p style="font-size: 10px;">{{ image["caption"] }}</p>
+                            </div>
+                        </div>
                         {% endfor %}
                         </div>
                         {% endif %}

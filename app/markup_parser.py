@@ -7,7 +7,7 @@ def get_markup_data(memos):
 
         memo["era_color"] = get_color_for_era(memo["era"], memo["time_period"])
         memo["citations_text"] = memo["citations"].split(",")
-        memo["markup_text"] = get_markup_text(memo["markup"])
+        memo["markup_text"] = markup_to_marked_up(memo["markup"])
     return memos
 
 def get_image_data(images: str):
@@ -45,114 +45,92 @@ def get_color_for_era(era: str, time_period: str):
             return eras["近代"]
         else: return eras["現代"]
 
-"""
-    paragraph type options:
-        b = box
-        l = lined border
-        d = default
-"""
-def get_markup_text(markup: str):
+def markup_to_marked_up(markup: str):
+    marked_up = []
     paragraphs = markup.split("\n\n")
-    marked_up_lines = [] # [(paragraph type, [[{"text", "tag_type", "style", "tooltip", "link"}]])]
-    for p in range(len(paragraphs)):
-        paragraph = paragraphs[p]
-
-        lines = paragraph.split("\n")
-        starting_line = 0
+    for i in range(len(paragraphs)):
+        lines = paragraphs[i].split("\n")
         if len(lines) > 0:
-            if lines[0].__contains__("(B)"):
-                starting_line = 1
-                box_color = "var(--sea)"
-                if len(lines[0]) > 6: box_color = lines[0][6:-1]
-                marked_up_lines.append(("b", [[{"box_color": box_color}]]))
-            else: marked_up_lines.append(("d", []))
-        
-        for line in lines[starting_line:]: 
-            if line.__contains__("(H)"):
-                marked_up_lines[p][1].append([{"text": line[3:], "tag_type": "p", "style": "padding: 0 5px; background-color: var(--sea); color: var(--navy);"}])
-            else: marked_up_lines[p][1].append(parse_lines_with_options(line))
+            p_data = markup_p_data(json.loads(lines[0]))
+            marked_up.append({"style": p_data, "lines": []})
 
-    return marked_up_lines
+            for j in range(1, len(lines)):
+                line = lines[j]
+                if len(line) > 0:
+                    option_end_index = line.index("}")
+                    marked_up[i]["lines"].append({
+                        "data": markup_t_data(json.loads(line[0:(option_end_index + 1)])),
+                        "components": markup_line(line[(option_end_index + 1):])
+                    })
+    return marked_up
 
-"""
-    @param options: dict<str : str> - option dict
-    @return: dict<str : str> - style, tooltip, link
-"""
-def convert_options_to_style(options: dict):
-    style = {"style": ""}
-
-    dt_option_style_dict = {
-        "h": "padding: 0 5px; color: var(--navy); background-color: [c];",
-        "g": "text-shadow: 0 0 1.5px [c], 0 0 7px [c]; color: [c];",
-        "c": "color: [c];",
-        "": ""
-    }
-
-    color = "transparent"
-    if "c" in options: color = options["c"]
-
-    if "dt" in options.keys() and options["dt"]:
-        style["style"] += dt_option_style_dict[options["dt"]].replace("[c]", color)
-    
-    if "tt" in options.keys() and options["tt"]: style["tooltip"] = options["tt"]
-    elif "a" in options.keys() and options["a"]: style["link"] = options["a"]
-    
-    if "f" in options.keys() and options["f"]: style["furigana"] = options["f"]
-
+def markup_p_data(p_data: dict) -> str:
+    if "box_style" in p_data:
+        box_style = p_data["box_style"]
+        if box_style == "i":
+            return "background-color: var(--ice); color: var(--navy); border-radius: 10px; padding: 10px;"
+        elif box_style == "s":
+            return "border: 4px solid var(--sea); color: white; border-radius: 10px; padding: 10px;"
+    style = ""
+    for key in p_data.keys(): style += f"{key}: {p_data[key]};"
     return style
 
-def parse_lines_with_options(line: str):
-    components = [{"text": ""}]
-    component_index = 0
-    index_incremented = True
+def markup_t_data(t_data: dict) -> dict:
+    marked_up = {"style": ""}
 
-    option_value_search = False
-    option_key_search = False
-    option_key = ""
-    option_value = ""
+    if "style" in t_data:
+        text_style = t_data["style"]
+        if text_style == "h":
+            marked_up["style"] = "text-align: center; padding: 10px 0; color: var(--navy);"
+            marked_up["tag_type"] = "t"
+        elif text_style == "i":
+            marked_up["style"] = "background-color: var(--red); color: var(--navy);"
+        elif text_style == "gtt":
+            marked_up["style"] = "text-shadow: 0 0 1.5px var(--lime), 0 0 7px var(--lime); color: var(--lime);"
+        elif text_style == "gp":
+            marked_up["style"] = "text-shadow: 0 0 1.5px var(--red), 0 0 7px var(--red); color: var(--red);"
+        elif text_style == "kw":
+            marked_up["style"] = "color: var(--sun);"
+        elif text_style == "sh":
+            marked_up["style"] = "padding: 5px 0; color: var(--navy);"
+            marked_up["tag_type"] = "t"
+    
+    for key in t_data.keys(): 
+        if key == "tt": marked_up["tooltip"] = t_data[key]
+        elif key == "f": marked_up["furigana"] = t_data[key]
+        elif key == "a": marked_up["link"] = t_data[key]
+        elif key == "t": marked_up["tag_type"] = t_data[key]
+        else: marked_up["style"] += f"{key}: {t_data[key]};"
+    return marked_up
 
-    options = {}
+def markup_line(line: str) -> dict:
+    components = []
+
     option_search = False
+    option_text = ""
 
-    for i in range(len(line)):
-        c = line[i]
-        if c == "<":
-            if not index_incremented:
-                components.append({"text": ""})
-                component_index += 1
+    component_text = ""
+
+    c = 0
+    while c < len(line):
+        if line[c] == "<":
+            if len(component_text) > 0:
+                components.append({"text": component_text, "data": {}})
+                component_text = ""
             option_search = True
-        elif c == ">":
-            components.append({"text": ""})
-            component_index += 1
-            index_incremented = True
+        elif line[c] == ">":
+            components.append({
+                "text": component_text,
+                "data": markup_t_data(json.loads(option_text)) 
+            })
+            option_text = ""
+            component_text = ""
         elif option_search:
-            if c == "{": option_key_search = True
-            elif c == ":":
-                option_key_search = False
-                option_value_search = True
-            elif c == ",":
-                options[option_key] = option_value
-                option_key = ""
-                option_value = ""
-                option_key_search = True
-                option_value_search = False
-            elif c == "}":
-                options[option_key] = option_value
-                option_search = False
-                option_key = ""
-                option_value = ""
-                option_key_search = False
-                option_value_search = False
-
-                style = convert_options_to_style(options)
-                components[component_index]["style"] = style["style"]
-                if "tooltip" in style: components[component_index]["tooltip"] = style["tooltip"]
-                if "link" in style: components[component_index]["link"] = style["link"]
-                if "furigana" in style: components[component_index]["furigana"] = style["furigana"]
-            elif option_key_search: option_key += c
-            elif option_value_search: option_value += c
+            option_text += line[c]
+            if line[c] == "}": option_search = False
         else:
-            index_incremented = False
-            components[component_index]["text"] += c
-
+            component_text += line[c]
+            if c == len(line) - 1:
+                components.append({"text": component_text, "data": {}})
+        c += 1
     return components
