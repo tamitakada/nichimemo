@@ -54,9 +54,6 @@
     margin: 10px 0;
 }
 
-/* .memo-box p { color: var(--text-color); }
-.memo-box ul li::before { color: var(--text-color); } */
-
 .memo-line-with-tooltip { position: relative; }
 .memo-line-with-tooltip::after {
     content: attr(data-tooltip);
@@ -90,6 +87,60 @@
     font-family: Hina;
     transition: 0.5s;
 }
+
+.hierarchy-row {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+}
+
+.hierarchy-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hierarchy-node {
+    padding: 8px;
+    margin: 8px;
+    border: 3px solid var(--tooltip-color);
+    border-radius: 8px;
+    color: var(--tooltip-color);
+}
+
+.hierarchy-node-with-tooltip {
+    padding: 8px;
+    margin: 8px;
+    border: 3px solid var(--tooltip-color);
+    border-radius: 8px;
+    color: var(--tooltip-color);
+    box-shadow: 0 0 5px var(--tooltip-color);
+    text-shadow: 0 0 1.5px var(--tooltip-color), 0 0 7px var(--tooltip-color);
+    position: relative;
+}
+
+.hierarchy-node-with-tooltip::after {
+    content: attr(data-tooltip);
+    
+    position: absolute;
+    left: 0; bottom: 45px;
+    width: 50px;
+    font-size: 0.6em;
+    
+    background-color: var(--tooltip-color);
+    color: var(--navy);
+
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px var(--tooltip-color);
+
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.hierarchy-node-with-tooltip:hover::after { opacity: 1; }
 
 @media only screen and (max-width: 760px) {
     #memo-container { flex-direction: column; }

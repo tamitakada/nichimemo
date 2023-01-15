@@ -25,6 +25,80 @@
                     {% for paragraph in memo["markup_text"] %}
 
                     <div style="padding-bottom: 15px; {{ paragraph['style'] }}">
+                        {% if paragraph['type'] == "table" %}
+                        <table class="memo-table">
+                            {% for row in paragraph['lines'] %}
+                            <tr>
+                            {% for cell in row %}
+                                {% if 'h' in cell['data'] and cell['data']['h'] == 't' %}
+                                <th 
+                                    {% if 'cs' in cell['data'] %}colspan="{{ cell['data']['cs'] }}"{% endif %} 
+                                    {% if 'rs' in cell['data'] %}rowspan="{{ cell['data']['rs'] }}"{% endif %} 
+                                >
+                                {% else %}
+                                <td 
+                                    {% if 'cs' in cell['data'] %}colspan="{{ cell['data']['cs'] }}"{% endif %}
+                                    {% if 'cs' in cell['data'] %}rowspan="{{ cell['data']['rs'] }}"{% endif %} 
+                                >
+                                {% endif %}
+                                {% for component in cell["components"] %}
+                                    {% if "furigana" in component["data"].keys() and component["data"]["furigana"]|length > 0 %}
+                                    <ruby
+                                        {% if "tooltip" in component["data"].keys() and component["data"]["tooltip"]|length > 0 %}
+                                        class="memo-line-with-tooltip" 
+                                        data-tooltip="{{ component['data']['tooltip'] }}"
+                                        {% endif %}
+                                        style="display: inline; {{ component['data']['style'] }}" 
+                                    >{{ component['text'] }}<rt>{{ component['data']['furigana'] }}</rt></ruby>
+                                    {% else %}
+                                    <p
+                                        {% if "tooltip" in component["data"].keys() and component["data"]["tooltip"]|length > 0 %}
+                                        class="memo-line-with-tooltip" 
+                                        data-tooltip="{{ component['data']['tooltip'] }}"
+                                        {% endif %}
+                                        style="display: inline; {{ component['data']['style'] }}"
+                                    >{{ component['text'] }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if 'h' in cell['data'] and cell['data']['h'] == 't' %}</th>{% else %}</td>{% endif %}
+                            {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        {% elif paragraph['type'] == "hierarchy" %}
+
+                        <div class="flex-row" style="width: 100%; padding: 10px; align-items: start; justify-content: center;">
+                            {% for node in paragraph['lines'] recursive %}
+                            <div class="hierarchy-col">
+                                <div 
+                                    {% if "tt" in node[0]["data"] and node[0]["data"]["tt"]|length > 0 %}
+                                    class="hierarchy-node-with-tooltip"
+                                    data-tooltip="{{ node[0]['data']['tt'] }}"
+                                    {% else %}class="hierarchy-node"{% endif %}
+
+                                    style="--tooltip-color:{% if 'c' in node[0]['data'] %}{{node[0]['data']['c']}}{% else %}var(--ice){% endif %};"
+                                >
+                                    {% for component in node[0]["components"] %}
+                                    {% if "furigana" in component["data"].keys() and component["data"]["furigana"]|length > 0 %}
+                                    <ruby style="display: inline; {{ component['data']['style'] }}" >
+                                        {{ component['text'] }}
+                                        <rt>{{ component['data']['furigana'] }}</rt>
+                                    </ruby>
+                                    {% else %}
+                                    <p style="display: inline; {{ component['data']['style'] }}">
+                                        {{ component['text'] }}
+                                    </p>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% if node[1]|length > 0 %}
+                                <div class="hierarchy-row">{{ loop(node[1]) }}</div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        {% else %}
                         <ul>
                         {% for line in paragraph['lines'] %}
                             {% if "tag_type" in line["data"].keys() and line["data"]["tag_type"] == "t" %}
@@ -54,6 +128,7 @@
                             {% else %}</li>{% endif %}
                         {% endfor %}
                         </ul>
+                        {% endif %}
 
                         {% if "image_data" in memo.keys() and (loop.index - 1) in memo["image_data"].keys()  %}
                         <div class="flex-row" style="padding-top: 10px; justify-content: space-around;">

@@ -42,6 +42,20 @@ ul li::before {
     display: inline-block;
 }
 
+table {
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+
+th { color: var(--sea); background-color: rgba(255, 255, 255, 0.2); }
+
+td, th {
+    border: 1px solid white;
+    border-collapse: collapse;
+    padding: 8px;
+    text-align: left;
+}
+
 input {
     width: 80vw;
     max-width: 600px;

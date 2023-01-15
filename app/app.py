@@ -15,8 +15,6 @@ def get_search():
     query = request.args['q']
     memos = mp.get_markup_data(database.find_memos_matching_query(query))
 
-    print(memos[0]["images"])
-
     return render_template(
         "index.html",
         memos=memos,

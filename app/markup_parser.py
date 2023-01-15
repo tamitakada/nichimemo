@@ -45,6 +45,26 @@ def get_color_for_era(era: str, time_period: str):
             return eras["近代"]
         else: return eras["現代"]
 
+def get_hierarchy_node(lines, current, col):
+    if current >= len(lines): return []
+    else:
+        nodes = lines[current].split("|")
+        node_hierarchy = []
+        for i in range(len(nodes)):
+            node = nodes[i]
+
+            option_end_index = node.index("}")
+            node_data = json.loads(node[0:(option_end_index + 1)])
+            if "p" in node_data and node_data["p"] != col: return []
+
+            if len(node) > 0: 
+                node_hierarchy.append([
+                    {"data": node_data, "components": markup_line(node[(option_end_index + 1):])}, 
+                    get_hierarchy_node(lines, current + 1, i)
+                ])
+        return node_hierarchy
+            
+
 def markup_to_marked_up(markup: str):
     marked_up = []
     paragraphs = markup.split("\n\n")
@@ -52,28 +72,50 @@ def markup_to_marked_up(markup: str):
         lines = paragraphs[i].split("\n")
         if len(lines) > 0:
             p_data = markup_p_data(json.loads(lines[0]))
-            marked_up.append({"style": p_data, "lines": []})
+            marked_up.append({"style": p_data["style"], "type": p_data["type"], "lines": []})
 
-            for j in range(1, len(lines)):
-                line = lines[j]
-                if len(line) > 0:
-                    option_end_index = line.index("}")
-                    marked_up[i]["lines"].append({
-                        "data": markup_t_data(json.loads(line[0:(option_end_index + 1)])),
-                        "components": markup_line(line[(option_end_index + 1):])
-                    })
+            if p_data["type"] == "table":
+                for j in range(1, len(lines)):
+                    marked_up[i]["lines"].append([])
+                    cells = lines[j].split("|")
+                    for cell in cells:
+                        if len(cell) > 0:
+                            option_end_index = cell.index("}")
+                            marked_up[i]["lines"][j - 1].append({
+                                "data": json.loads(cell[0:(option_end_index + 1)]),
+                                "components": markup_line(cell[(option_end_index + 1):])
+                            })
+            elif p_data["type"] == "hierarchy": 
+                marked_up[i]["lines"] = get_hierarchy_node(lines[1:], 0, 0)
+            else:
+                for j in range(1, len(lines)):
+                    line = lines[j]
+                    if len(line) > 0:
+                        option_end_index = line.index("}")
+                        marked_up[i]["lines"].append({
+                            "data": markup_t_data(json.loads(line[0:(option_end_index + 1)])),
+                            "components": markup_line(line[(option_end_index + 1):])
+                        })
     return marked_up
 
-def markup_p_data(p_data: dict) -> str:
+def markup_p_data(p_data: dict) -> dict:
     if "box_style" in p_data:
         box_style = p_data["box_style"]
         if box_style == "i":
-            return "background-color: var(--ice); color: var(--navy); border-radius: 10px; padding: 10px;"
+            return {
+                "type": "div",
+                "style": "background-color: var(--ice); color: var(--navy); border-radius: 10px; padding: 10px;"
+            }
         elif box_style == "s":
-            return "border: 4px solid var(--sea); color: white; border-radius: 10px; padding: 10px;"
+            return {
+                "type": "div",
+                "style": "border: 4px solid var(--sea); color: white; border-radius: 10px; padding: 10px;"
+            }
+        elif box_style == "table": return {"type": "table", "style": ""}
+        elif box_style == "hierarchy": return {"type": "hierarchy", "style": ""}
     style = ""
     for key in p_data.keys(): style += f"{key}: {p_data[key]};"
-    return style
+    return {"type": "div", "style": style}
 
 def markup_t_data(t_data: dict) -> dict:
     marked_up = {"style": ""}
@@ -94,6 +136,10 @@ def markup_t_data(t_data: dict) -> dict:
         elif text_style == "sh":
             marked_up["style"] = "padding: 5px 0; color: var(--navy);"
             marked_up["tag_type"] = "t"
+        elif text_style == "s":
+            marked_up["style"] = "background-color: var(--ice); color: var(--navy);"
+        elif text_style == "ke":
+            marked_up["style"] = "background-color: var(--sun); color: var(--navy);"
     
     for key in t_data.keys(): 
         if key == "tt": marked_up["tooltip"] = t_data[key]
