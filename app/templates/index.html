@@ -166,7 +166,7 @@
         </div>
     </div>
 
-    <div class="flex-row" style="padding: 10px 0; justify-content: start; overflow: auto; flex: 1;">
+    <div id="tab-container" class="flex-row" style="padding: 10px 0; justify-content: start; overflow: auto; flex: 1;">
         <div class="tab" style="color: var(--navy); margin-left: 15px; border: 3px solid var(--navy); background-color: {{ memos[0]['era_color'] }}; box-shadow: 0 0 10px {{ memos[0]['era_color'] }};">
             <h3>{{ memos[0]["title"] }}</h3>
         </div>
@@ -181,6 +181,13 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
+
+{% else %}
+
+<div class="center-col" style="min-height: 54vh;">
+    <h2 style="color: rgba(255, 255, 255, 0.4); font-family: Arial; margin-bottom: 20px;">乁(◉ᗝ◉)ㄏ</h2>
+    <h2>該当する項目は見つかりませんでした</h2>
+</div>
 
 {% endif %}
 {% endblock %}

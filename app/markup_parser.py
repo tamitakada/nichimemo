@@ -13,6 +13,7 @@ def get_markup_data(memos):
 def get_image_data(images: str):
     all_images = {} # paragraph number : [image data]
     for image in images.split(" "):
+        print(image)
         image_data = json.loads(image)
 
         paragraph = 0
@@ -110,6 +111,11 @@ def markup_p_data(p_data: dict) -> dict:
             return {
                 "type": "div",
                 "style": "border: 4px solid var(--sea); color: white; border-radius: 10px; padding: 10px;"
+            }
+        elif box_style == "g":
+            return {
+                "type": "div",
+                "style": "border: 4px solid var(--lime); color: white; border-radius: 10px; padding: 10px;"
             }
         elif box_style == "table": return {"type": "table", "style": ""}
         elif box_style == "hierarchy": return {"type": "hierarchy", "style": ""}

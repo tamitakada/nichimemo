@@ -27,6 +27,7 @@ def db_setup():
         title           TEXT NOT NULL,
         markup          LONGTEXT NOT NULL,
         era             TEXT NOT NULL,
+        sort_key        INT NOT NULL,
         time_period     TEXT NOT NULL,
         citations       TEXT NOT NULL,
         last_edit_date  DATE NOT NULL,
@@ -55,7 +56,7 @@ def generate_unique_id():
     Returns 1 if memo is found and edited.
     Returns 0 if memo with specified id is not found.
 """
-def edit_memo(id: int, title="", markup="", era="", time_period="", citations="", images=""):
+def edit_memo(id: int, sort_key: int, title="", markup="", era="", time_period="", citations="", images=""):
     memo = find_memo_by_id(id)
     if memo:
         db = get_db()
@@ -64,7 +65,7 @@ def edit_memo(id: int, title="", markup="", era="", time_period="", citations=""
         updated_info = {
             "title": title, 
             "markup": markup, 
-            "era": era, 
+            "era": era,
             "time_period": time_period,
             "citations": citations,
             "images": images
@@ -78,6 +79,7 @@ def edit_memo(id: int, title="", markup="", era="", time_period="", citations=""
             SET title = ?, 
                 markup = ?, 
                 era = ?, 
+                sort_key = ?,
                 time_period = ?, 
                 citations = ?,
                 last_edit_date = ?, 
@@ -91,6 +93,7 @@ def edit_memo(id: int, title="", markup="", era="", time_period="", citations=""
                 updated_info["title"], 
                 updated_info["markup"], 
                 updated_info["era"], 
+                sort_key,
                 updated_info["time_period"],
                 updated_info["citations"],
                 date.today(),
@@ -105,16 +108,16 @@ def edit_memo(id: int, title="", markup="", era="", time_period="", citations=""
         return 1
     return 0
 
-def add_memo(title: str, markup: str, era: str, time_period: str, citations: str, images=""):
+def add_memo(title: str, markup: str, era: str, sort_key: int, time_period: str, citations: str, images=""):
     db = get_db()
     c = db.cursor()
 
     id = generate_unique_id()
 
     command = """INSERT INTO memos 
-        (id, title, markup, era, time_period, citations, last_edit_date, images) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);"""
-    c.execute(command, (id, title, markup, era, time_period, citations, date.today(), images))
+        (id, title, markup, era, sort_key, time_period, citations, last_edit_date, images) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"""
+    c.execute(command, (id, title, markup, era, sort_key, time_period, citations, date.today(), images))
 
     db.commit()
     db.close()
@@ -147,11 +150,12 @@ def memo_tuple_to_dict(memo):
             "title": memo[1],
             "markup": memo[2],
             "era": memo[3],
-            "time_period": memo[4],
-            "citations": memo[5],
-            "last_edit_date": memo[6]
+            "sort_key": memo[4],
+            "time_period": memo[5],
+            "citations": memo[6],
+            "last_edit_date": memo[7]
         }
-        if memo[7] and len(memo[7]) > 0: memo_dict["images"] = memo[7]
+        if memo[8] and len(memo[8]) > 0: memo_dict["images"] = memo[8]
         return memo_dict
     else: return None
 
@@ -176,7 +180,28 @@ def find_memos_matching_query(query: str):
     command = f"""SELECT * FROM memos WHERE 
         title LIKE '%{query}%' OR 
         markup LIKE '%{query}%' OR
-        era LIKE '%{query}%' ORDER BY time_period;"""
+        era LIKE '%{query}%'
+        ORDER BY 
+            CASE era
+                WHEN '縄文時代' THEN 0
+                WHEN '弥生時代' THEN 1
+                WHEN '古墳時代' THEN 2
+                WHEN '飛鳥時代' THEN 3
+                WHEN '奈良時代' THEN 4
+                WHEN '平安時代' THEN 5
+                WHEN '鎌倉時代' THEN 6
+                WHEN '室町時代' THEN 7
+                WHEN '戦国時代' THEN 8
+                WHEN '江戸時代' THEN 9
+                WHEN '幕末' THEN 10
+                WHEN '明治時代' THEN 11
+                WHEN '昭和時代（戦前）' THEN 12
+                WHEN '第二次世界大戦' THEN 13
+                WHEN '昭和時代（戦後）' THEN 14
+                WHEN '平成時代' THEN 15
+            END,
+            sort_key
+        """
     memos = c.execute(command).fetchall()
 
     db.close()

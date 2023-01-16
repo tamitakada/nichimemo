@@ -142,6 +142,8 @@
 
 .hierarchy-node-with-tooltip:hover::after { opacity: 1; }
 
+#tab-container::-webkit-scrollbar { height: 5px; }
+
 @media only screen and (max-width: 760px) {
     #memo-container { flex-direction: column; }
     .memo-content, .citation { min-width: calc(100vw - 80px); }
