@@ -29,7 +29,8 @@
 
 html, body { box-sizing: border-box; height: 100%; background-color: var(--navy); }
 
-@font-face { font-family: Hina; src: url("fonts/HinaMincho-Regular.ttf"); }
+/* @font-face { font-family: Hina; src: url("fonts/HinaMincho-Regular.ttf"); } */
+@font-face { font-family: Hina; src: url("fonts/HinaMincho-Regular.woff"); }
 
 h2 { font-family: Hina; font-size: 28px; margin: 10px 0; color: white; }
 h3 { font-family: Hina; font-size: 20px; writing-mode: vertical-lr; }
