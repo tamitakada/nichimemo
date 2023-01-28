@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 import database
 import markup_parser as mp
 
@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def get_home():
-    memos = mp.get_markup_data(database.get_random_memos())
+    memos = mp.get_markup_data(database.find_memos_matching_query(""))
 
     return render_template("index.html", memos=memos)
 

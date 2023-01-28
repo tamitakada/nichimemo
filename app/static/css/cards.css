@@ -15,14 +15,14 @@
     position: relative; 
     border-radius: 10px;
     overflow: hidden;
-    transition: 1s;
+    transition: width 1s;
 }
 
 .memo {
     background-color: var(--lightNavy);
     overflow-x: hidden;
     overflow-y: scroll;
-    transition: 1s;
+    transition: transform 1s;
 }
 
 .memo-content { color: white; }
@@ -40,7 +40,7 @@
     border-radius: 10px;
     border: 3px solid var(--sea);
     overflow: hidden;
-    transition: 0.5s;
+    transition: background-color 0.5s, border-color 0.5s, color 0.5s, box-shadow 0.5s;
 
     display: flex;
     flex-direction: row;
