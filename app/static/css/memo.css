@@ -76,12 +76,29 @@ td, th {
 
 /* MEMO DIAGRAM STYLES ================================================= */
 
-.hierarchy { width: 100%; height: 300px; position: relative; }
-.diagram { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+.hierarchy { width: 100%; display: flex; flex-direction: column; align-items: stretch; }
 
-.diagram-caption {
+.node-caption {
+    border: 3px solid var(--sea);
+    padding: 15px;
+    border-radius: 20px;
     display: none;
-    position: absolute; bottom: 0; right: 0; 
-    height: 100px; width: 30%; 
-    background-color: var(--ice); color: var(--navy);
+}
+.node-caption-heading {
+    color: var(--sea);
+    font-size: 20px;
+    font-weight: bold;
+}
+.node-caption-text {
+    color: var(--sea);
+    margin-top: 10px;
+}
+
+.node-text { font-size: 12px; }
+.node-ruby { font-size: 6px; }
+
+.link {
+    fill: none;
+    stroke: white;
+    stroke-width: 1px;
 }

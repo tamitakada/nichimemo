@@ -38,7 +38,6 @@ h4 { font-family: Hina; color: white; padding-bottom: 10px; opacity: 40%; }
 p, ruby { font-family: Hina; text-align: left; padding: 0; margin: 0; }
 
 li { text-align: left; }
-ul {  }
 .memo-list li::before {
     content: "\2022";
     font-weight: bold;
