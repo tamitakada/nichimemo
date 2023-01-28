@@ -44,22 +44,3 @@ def get_color_for_era(era: str, time_period: str):
         elif latest_year < 1945 or (latest_year == 1945 and era == "第二次世界大戦"): 
             return eras["近代"]
         else: return eras["現代"]
-
-# def get_hierarchy_node(lines, current, col):
-#     if current >= len(lines): return []
-#     else:
-#         nodes = lines[current].split("|")
-#         node_hierarchy = []
-#         for i in range(len(nodes)):
-#             node = nodes[i]
-
-#             option_end_index = node.index("}")
-#             node_data = json.loads(node[0:(option_end_index + 1)])
-#             if "p" in node_data and node_data["p"] != col: return []
-
-#             if len(node) > 0: 
-#                 node_hierarchy.append([
-#                     {"data": node_data, "components": markup_line(node[(option_end_index + 1):])}, 
-#                     get_hierarchy_node(lines, current + 1, i)
-#                 ])
-#         return node_hierarchy

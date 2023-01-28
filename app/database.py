@@ -159,20 +159,6 @@ def memo_tuple_to_dict(memo):
         return memo_dict
     else: return None
 
-def get_random_memos():
-    db = get_db()
-    c = db.cursor()
-
-    command = "SELECT * FROM memos ORDER BY RANDOM() LIMIT 1"
-    memos = c.execute(command).fetchall()
-
-    db.close()
-
-    all_memos = []
-    for memo in memos: all_memos.append(memo_tuple_to_dict(memo))
-
-    return all_memos
-
 def find_memos_matching_query(query: str):
     db = get_db()
     c = db.cursor()
