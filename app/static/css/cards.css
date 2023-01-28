@@ -29,6 +29,7 @@
 
 .memo-content, .citation { 
     min-width: 510px;
+    max-width: 510px;
 }
 
 .tab {
@@ -73,7 +74,6 @@
     opacity: 0;
     transition: opacity 0.3s;
 }
-
 .memo-line-with-tooltip:hover::after { opacity: 1; }
 
 .memo-tab {

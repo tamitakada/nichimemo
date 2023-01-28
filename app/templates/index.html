@@ -9,6 +9,10 @@
     <input type="text" placeholder="時代・人物・歴史出来事などを検索" autocomplete="off" name="q" {% if query|length > 0 %} value="{{ query }}" {% endif %} >
 </form>
 
+{% if feature %}
+<h2 style="padding: 25px 0 30px 15px; color: white; opacity: 40%; letter-spacing: 15px; font-size: 20px;">ピックアップ</h2>
+{% endif %}
+
 {% if memos|length > 0 %}
 <div id="memo-container">
     <div class="flex-col page-container" style="flex: 2; align-items: stretch; width: 100%;">
@@ -21,138 +25,13 @@
         <div class="page" {% if loop.index == 1 %}style="width: 550px;"{% endif %}>
             <div class="memo" style="width: 100%; height: 100%; z-index: 2; position: absolute; top: 0; left: 0;">
                 <div class="memo-content" style="padding: 20px;">
-                    <h2>{{ memo["title"] }}</h2>
-                    {% for paragraph in memo["markup_text"] %}
-
-                    <div style="padding-bottom: 15px; {{ paragraph['style'] }}">
-                        {% if paragraph['type'] == "table" %}
-                        <table class="memo-table">
-                            {% for row in paragraph['lines'] %}
-                            <tr>
-                            {% for cell in row %}
-                                {% if 'h' in cell['data'] and cell['data']['h'] == 't' %}
-                                <th 
-                                    {% if 'cs' in cell['data'] %}colspan="{{ cell['data']['cs'] }}"{% endif %} 
-                                    {% if 'rs' in cell['data'] %}rowspan="{{ cell['data']['rs'] }}"{% endif %} 
-                                >
-                                {% else %}
-                                <td 
-                                    {% if 'cs' in cell['data'] %}colspan="{{ cell['data']['cs'] }}"{% endif %}
-                                    {% if 'cs' in cell['data'] %}rowspan="{{ cell['data']['rs'] }}"{% endif %} 
-                                >
-                                {% endif %}
-                                {% for component in cell["components"] %}
-                                    {% if "furigana" in component["data"].keys() and component["data"]["furigana"]|length > 0 %}
-                                    <ruby
-                                        {% if "tooltip" in component["data"].keys() and component["data"]["tooltip"]|length > 0 %}
-                                        class="memo-line-with-tooltip" 
-                                        data-tooltip="{{ component['data']['tooltip'] }}"
-                                        {% endif %}
-                                        style="display: inline; {{ component['data']['style'] }}" 
-                                    >{{ component['text'] }}<rt>{{ component['data']['furigana'] }}</rt></ruby>
-                                    {% else %}
-                                    <p
-                                        {% if "tooltip" in component["data"].keys() and component["data"]["tooltip"]|length > 0 %}
-                                        class="memo-line-with-tooltip" 
-                                        data-tooltip="{{ component['data']['tooltip'] }}"
-                                        {% endif %}
-                                        style="display: inline; {{ component['data']['style'] }}"
-                                    >{{ component['text'] }}</p>
-                                    {% endif %}
-                                {% endfor %}
-                                {% if 'h' in cell['data'] and cell['data']['h'] == 't' %}</th>{% else %}</td>{% endif %}
-                            {% endfor %}
-                            </tr>
-                            {% endfor %}
-                        </table>
-                        {% elif paragraph['type'] == "hierarchy" %}
-
-                        <div class="flex-row" style="width: 100%; padding: 10px; align-items: start; justify-content: center;">
-                            {% for node in paragraph['lines'] recursive %}
-                            <div class="hierarchy-col">
-                                <div 
-                                    {% if "tt" in node[0]["data"] and node[0]["data"]["tt"]|length > 0 %}
-                                    class="hierarchy-node-with-tooltip"
-                                    data-tooltip="{{ node[0]['data']['tt'] }}"
-                                    {% else %}class="hierarchy-node"{% endif %}
-
-                                    style="--tooltip-color:{% if 'c' in node[0]['data'] %}{{node[0]['data']['c']}}{% else %}var(--ice){% endif %};"
-                                >
-                                    {% for component in node[0]["components"] %}
-                                    {% if "furigana" in component["data"].keys() and component["data"]["furigana"]|length > 0 %}
-                                    <ruby style="display: inline; {{ component['data']['style'] }}" >
-                                        {{ component['text'] }}
-                                        <rt>{{ component['data']['furigana'] }}</rt>
-                                    </ruby>
-                                    {% else %}
-                                    <p style="display: inline; {{ component['data']['style'] }}">
-                                        {{ component['text'] }}
-                                    </p>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                                {% if node[1]|length > 0 %}
-                                <div class="hierarchy-row">{{ loop(node[1]) }}</div>
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                        </div>
-
-                        {% else %}
-                        <ul>
-                        {% for line in paragraph['lines'] %}
-                            {% if "tag_type" in line["data"].keys() and line["data"]["tag_type"] == "t" %}
-                            <div style="text-align: left; {{ line['data']['style'] }}">
-                            {% else %}<li>{% endif %}
-                            {% for component in line["components"] %}
-                                {% if "furigana" in component["data"].keys() and component["data"]["furigana"]|length > 0 %}
-                                <ruby
-                                    {% if "tooltip" in component["data"].keys() and component["data"]["tooltip"]|length > 0 %}
-                                    class="memo-line-with-tooltip" 
-                                    data-tooltip="{{ component['data']['tooltip'] }}"
-                                    {% endif %}
-                                    style="display: inline; {{ component['data']['style'] }}" 
-                                >{{ component['text'] }}<rt>{{ component['data']['furigana'] }}</rt></ruby>
-                                {% else %}
-                                <p
-                                    {% if "tooltip" in component["data"].keys() and component["data"]["tooltip"]|length > 0 %}
-                                    class="memo-line-with-tooltip" 
-                                    data-tooltip="{{ component['data']['tooltip'] }}"
-                                    {% endif %}
-                                    style="display: inline; {{ component['data']['style'] }}"
-                                >{{ component['text'] }}</p>
-                                {% endif %}
-                            {% endfor %}
-                            {% if "tag_type" in line["data"].keys() and line["data"]["tag_type"] == "t" %}
-                            </div>
-                            {% else %}</li>{% endif %}
-                        {% endfor %}
-                        </ul>
-                        {% endif %}
-
-                        {% if "image_data" in memo.keys() and (loop.index - 1) in memo["image_data"].keys()  %}
-                        <div class="flex-row" style="padding-top: 10px; justify-content: space-around;">
-                        {% for image in memo["image_data"][loop.index - 1] %}
-                        <div class="flex-col" style="max-width: 100%; padding: 0 5px;">
-                            <img 
-                                src="{{ url_for('static', filename='images/' + image['image_path']) }}"
-                                style="max-height: 200px; max-width: 100%; border-radius: 10px 10px 0 0;"
-                            />
-                            <div style="background-color: var(--red); padding: 5px; border-radius: 0 0 10px 10px;">
-                                <p style="font-size: 10px;">{{ image["caption"] }}</p>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
+                    {{ memo["content"]|safe }}
                 </div>
             </div>
             <div style="background-color: var(--red); width: 100%; height: 100%; z-index: 1; position: absolute; top: 0; left: 0;">
                 <div class="citation" style="padding: 20px;">
                     <h2 style="margin-bottom: 20px; color: var(--navy);">参考文献</h2>
-                    <ul>
+                    <ul class="memo-list">
                     {% for citation in memo["citations_text"] %}
                         <li style="color: var(--navy); font-family: Hina;">
                             {{ citation }}

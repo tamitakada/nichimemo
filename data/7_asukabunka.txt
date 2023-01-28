@@ -1,0 +1,20 @@
+飛鳥文化
+飛鳥時代
+2
+592-710
+{"image_path":"11_horyuji.jpeg","caption":"法隆寺","p_number":0} {"image_path":"12_kannon.jpeg","caption":"十一面観音菩薩立像","p_number":0} {"image_path":"13_yakushiji.jpeg","caption":"薬師寺東塔","p_number":1} {"image_path":"14_takamatsu.jpeg","caption":"高松塚古墳壁画(複製)","p_number":1}
+笹山晴生・佐藤信・五味文彦・高埜利彦 『詳説日本史 改訂版 日B309』 山川出版社、二〇二二年 p. 36-37、p. 40-41
+
+
+{}
+{"style":"h"}<{"background-color": "var(--sea)"}飛鳥文化>
+{}<{"style":"i"}仏教中心>の文化だった
+{}<{"f":"くだら"}百済>・<{"f":"こうらい"}高句麗>と随・唐の影響が著しい
+{}豪族によって多くの寺院が建てられた
+
+{}
+{"style":"h"}<{"background-color": "var(--sea)"}白鳳文化>
+{}7世紀後半~8世紀初頭の文化を指す
+{}仏教は急速に広まった
+{}儒教も普及し始めた
+{}漢詩・和歌の作成が始まった

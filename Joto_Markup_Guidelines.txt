@@ -40,6 +40,7 @@ style		h			centered heading
 		gtt			green glow indicating tooltip
 		gp			red glow indicating important name
 		kw			yellow color for keyword
+		s			blue highlight for important shiryou & setsu
 
 
 ==== CUSTOM STYLES USED WITH KEY "box_style"
@@ -47,3 +48,14 @@ style		h			centered heading
 CUSTOM VALUE	CUSTOM STYLE
 i		ice back, navy front
 s		sea border, white front
+table	table
+		SPECIAL MARKUP REQUIREMENTS FOR TABLES
+
+		Separate cells with commas.
+		Each line is a new row.
+
+		Each line may include the following option properties.
+		h		t (true - heading)
+				f (false [DEFAULT])
+		cs		colspan int
+		rs		rowspan int

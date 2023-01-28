@@ -1,0 +1,87 @@
+/* MEMO TEXT STYLES ================================================= */
+
+h1 { font-family: Hina; color: white; font-size: 28px; margin-bottom: 20px; }
+
+/* MEMO LIST STYLES ================================================= */
+
+ul { list-style: none; }
+li { font-family: Hina; text-align: left; padding-bottom: 5px; }
+li::before {
+    content: "\2022";
+    font-weight: bold;
+    width: 1em;
+    display: inline-block;
+}
+
+/* MEMO TEXT-DECORATION STYLES ================================================= */
+
+.ruby { padding-top: 5px; }
+
+mark { background-color: var(--sun); color: var(--navy); }
+.tag-heading { background-color: var(--sea); color: var(--navy); margin-right: 15px; }
+.document-text { background-color: var(--ice); color: var(--navy); }
+.legislation { background-color: var(--red); color: var(--navy); }
+
+.place-text { color: var(--sea); --tooltip-color: var(--sea); }
+.key-text { color: var(--sun); --tooltip-color: var(--sun); }
+.key-person { text-shadow: 0 0 1.5px var(--red), 0 0 7px var(--red); color: var(--red); --tooltip-color: var(--red); }
+.tooltip-text { text-shadow: 0 0 1.5px var(--lime), 0 0 7px var(--lime); color: var(--lime); position: relative; --tooltip-color: var(--lime); }
+
+/* MEMO SUPERTEXT ELEMENTS ================================================= */
+
+.tooltip-text::after {
+    content: attr(data-tooltip);
+    
+    position: absolute;
+    left: 0; bottom: 22px;
+    width: 90px;
+    font-size: 0.6em;
+    
+    background: var(--tooltip-color);
+    color: var(--navy);
+
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px var(--tooltip-color);
+
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.tooltip-text:hover::after { opacity: 1; }
+
+/* MEMO TABLE STYLES ================================================= */
+
+th { white-space: nowrap; text-align: center; }
+td, th {
+    border: 1px solid white;
+    border-collapse: collapse;
+    padding: 8px;
+    font-family: Hina;
+}
+.table-heading { background-color: rgba(255, 255, 255, 0.2); color: var(--sea); }
+.table-subheading { font-weight: bold; background-color: transparent; color: var(--sea); }
+
+.box-military {
+    border-radius: 10px;
+    background-color: var(--red);
+    padding: 10px;
+    color: var(--navy);
+}
+.box-military-heading { 
+    color: var(--navy); 
+    opacity: 100%; 
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px var(--navy);
+ }
+
+/* MEMO DIAGRAM STYLES ================================================= */
+
+.hierarchy { width: 100%; height: 300px; position: relative; }
+.diagram { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+
+.diagram-caption {
+    display: none;
+    position: absolute; bottom: 0; right: 0; 
+    height: 100px; width: 30%; 
+    background-color: var(--ice); color: var(--navy);
+}
