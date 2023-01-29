@@ -6,7 +6,7 @@
 <p style="padding-top: 10px; padding-left: 10px; opacity: 40%; font-size: 12px; letter-spacing: 10px; text-align: center; color: white;">常灯日本史メモ</p>
 
 <form style="margin: 20px 0;" action="/search" >
-    <input type="text" placeholder="時代・人物・歴史出来事などを検索" autocomplete="off" name="q" {% if query|length > 0 %} value="{{ query }}" {% endif %} >
+    <input type="text" placeholder="調べたい時代・人物・歴史出来事などを入力" autocomplete="off" name="q" {% if query|length > 0 %} value="{{ query }}" {% endif %} >
 </form>
 
 {% if feature %}
