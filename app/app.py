@@ -18,10 +18,18 @@ def get_home():
 
 @app.route("/<era>")
 def get_era(era):
-    valid_eras = ["古代", "中世", "近世", "近代", "現代"]
-    if era not in valid_eras: abort(404)
+    print(era)
+    valid_eras = {
+        "kodai": "古代",
+        "chusei": "中世", 
+        "kinsei": "近世", 
+        "kindai": "近代", 
+        "gendai": "現代"
+    }
+    print(valid_eras[era])
+    if era not in valid_eras.keys(): abort(404)
     else:
-        memos = mp.get_markup_data(database.find_all_memos_in_era(era))
+        memos = mp.get_markup_data(database.find_all_memos_in_era(valid_eras[era]))
         return render_template("index.html", memos=memos)
 
 @app.route("/search")
