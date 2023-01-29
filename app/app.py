@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, abort
+
 import database
 import markup_parser as mp
 
