@@ -7,14 +7,14 @@ app = Flask(__name__)
 @app.route("/")
 def get_home():
     memos = mp.get_markup_data([
-        database.find_memo_by_id(36708)
+        database.find_memo_by_id(38451)
     ])
     return render_template("index.html", feature=True, memos=memos)
 
 @app.route("/test")
 def get_test():
     content = ""
-    with open("../data/asuka/0_ritsuryo.html") as f:
+    with open("../data/kofun/1_kofunseiji.html") as f:
         content = f.read()
 
     memos = [

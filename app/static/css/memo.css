@@ -1,6 +1,13 @@
 /* MEMO TEXT STYLES ================================================= */
 
-h1 { font-family: Hina; color: white; font-size: 28px; margin-bottom: 20px; }
+h1 { color: white; font-size: 28px; margin-bottom: 20px; }
+.memo-heading-container { margin: 10px 0; }
+.memo-heading {
+    text-align: center;
+    font-size: 18px;
+    color: var(--navy); 
+    background-color: var(--sea); 
+}
 
 /* MEMO LIST STYLES ================================================= */
 
@@ -34,7 +41,7 @@ mark { background-color: var(--sun); color: var(--navy); }
     
     position: absolute;
     left: 0; bottom: 22px;
-    width: 90px;
+    width: 60px;
     font-size: 0.6em;
     
     background: var(--tooltip-color);
@@ -51,15 +58,37 @@ mark { background-color: var(--sun); color: var(--navy); }
 
 /* MEMO TABLE STYLES ================================================= */
 
-th { white-space: nowrap; text-align: center; }
+th { white-space: wrap; text-align: center; min-width: 50px; }
 td, th {
     border: 1px solid white;
     border-collapse: collapse;
     padding: 8px;
     font-family: Hina;
+    text-align: left;
 }
 .table-heading { background-color: rgba(255, 255, 255, 0.2); color: var(--sea); }
 .table-subheading { font-weight: bold; background-color: transparent; color: var(--sea); }
+
+/* MEMO IMAGE STYLES ================================================= */
+
+.image-container {
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-around;
+    padding-top: 10px;
+}
+.image-col {
+    display: flex; 
+    flex-direction: column;
+    max-width: 100%; 
+    padding: 0 5px;
+}
+.image { max-height: 200px; max-width: 100%; border-radius: 10px 10px 0 0; }
+
+.image-caption-container { background-color: var(--red); padding: 5px; border-radius: 0 0 10px 10px; }
+.image-caption { font-size: 10px; }
+
+/* MEMO BOX STYLES ================================================= */
 
 .box-military {
     border-radius: 10px;
@@ -73,6 +102,32 @@ td, th {
     font-weight: bold;
     -webkit-text-stroke: 0.3px var(--navy);
  }
+
+.box-culture {
+    border-radius: 10px;
+    background-color: var(--ice);
+    padding: 10px;
+    color: var(--navy);
+}
+.box-culture-heading { 
+    color: var(--navy); 
+    opacity: 100%; 
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px var(--navy);
+}
+
+.box-theory {
+    border-radius: 10px;
+    border: 2px solid var(--sea);
+    padding: 10px;
+    color: white;
+}
+.box-theory-heading { 
+    color: var(--sea); 
+    opacity: 100%; 
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px var(--sea);
+}
 
 /* MEMO DIAGRAM STYLES ================================================= */
 

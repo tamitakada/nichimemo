@@ -14,9 +14,6 @@ def get_db():
     time_period - 1940-1945, 12000BC-8000BC, 1211, etc. [English format; full years required]
     citations - str, separated by commas
     last_edit_date - e.g. 2023-01-11
-    images - JSON str - {'image_path': 'edo/kasei/art.png', 'caption': 'art!', 'p_number': 2, 'side': 'r'}
-        * p-number specifies paragraph number to place image next to
-        * side specifies whether to place image on right (r) or left (l) side
 """
 def db_setup():
     db = get_db()
@@ -30,8 +27,7 @@ def db_setup():
         sort_key        INT NOT NULL,
         time_period     TEXT NOT NULL,
         citations       TEXT NOT NULL,
-        last_edit_date  DATE NOT NULL,
-        images          TEXT
+        last_edit_date  DATE NOT NULL
     );"""
     c.execute(command)
 
@@ -56,7 +52,7 @@ def generate_unique_id():
     Returns 1 if memo is found and edited.
     Returns 0 if memo with specified id is not found.
 """
-def edit_memo(id: int, sort_key: int, title="", content="", era="", time_period="", citations="", images=""):
+def edit_memo(id: int, sort_key: int, title="", content="", era="", time_period="", citations=""):
     memo = find_memo_by_id(id)
     if memo:
         db = get_db()
@@ -67,8 +63,7 @@ def edit_memo(id: int, sort_key: int, title="", content="", era="", time_period=
             "content": content, 
             "era": era,
             "time_period": time_period,
-            "citations": citations,
-            "images": images
+            "citations": citations
         }
 
         for key in updated_info.keys():
@@ -82,8 +77,7 @@ def edit_memo(id: int, sort_key: int, title="", content="", era="", time_period=
                 sort_key = ?,
                 time_period = ?, 
                 citations = ?,
-                last_edit_date = ?, 
-                images = ? 
+                last_edit_date = ?
             WHERE id = ?;
         """
         
@@ -97,7 +91,6 @@ def edit_memo(id: int, sort_key: int, title="", content="", era="", time_period=
                 updated_info["time_period"],
                 updated_info["citations"],
                 date.today(),
-                updated_info["images"], 
                 id
             )
         )
@@ -108,16 +101,16 @@ def edit_memo(id: int, sort_key: int, title="", content="", era="", time_period=
         return 1
     return 0
 
-def add_memo(title: str, content: str, era: str, sort_key: int, time_period: str, citations: str, images=""):
+def add_memo(title: str, content: str, era: str, sort_key: int, time_period: str, citations: str):
     db = get_db()
     c = db.cursor()
 
     id = generate_unique_id()
 
     command = """INSERT INTO memos 
-        (id, title, content, era, sort_key, time_period, citations, last_edit_date, images) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"""
-    c.execute(command, (id, title, content, era, sort_key, time_period, citations, date.today(), images))
+        (id, title, content, era, sort_key, time_period, citations, last_edit_date) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);"""
+    c.execute(command, (id, title, content, era, sort_key, time_period, citations, date.today()))
 
     db.commit()
     db.close()
@@ -155,7 +148,6 @@ def memo_tuple_to_dict(memo):
             "citations": memo[6],
             "last_edit_date": memo[7]
         }
-        if memo[8] and len(memo[8]) > 0: memo_dict["images"] = memo[8]
         return memo_dict
     else: return None
 
