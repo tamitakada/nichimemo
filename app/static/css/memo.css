@@ -90,6 +90,19 @@ td, th {
 
 /* MEMO BOX STYLES ================================================= */
 
+.box-political {
+    border-radius: 10px;
+    background-color: var(--navy);
+    padding: 10px;
+    color: white;
+}
+.box-political-heading { 
+    color: white; 
+    opacity: 100%; 
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px white;
+ }
+
 .box-military {
     border-radius: 10px;
     background-color: var(--red);
@@ -132,11 +145,14 @@ td, th {
 /* MEMO DIAGRAM STYLES ================================================= */
 
 .hierarchy { width: 100%; display: flex; flex-direction: column; align-items: stretch; }
+.hierarchy-diagram { overflow-x: scroll; border: 3px solid var(--sea); margin-bottom: 10px; border-radius: 10px; }
+
+.node { cursor: pointer; }
 
 .node-caption {
     border: 3px solid var(--sea);
     padding: 15px;
-    border-radius: 20px;
+    border-radius: 10px;
     display: none;
 }
 .node-caption-heading {
