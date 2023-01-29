@@ -18,7 +18,6 @@ def get_home():
 
 @app.route("/<era>")
 def get_era(era):
-    print(era)
     valid_eras = {
         "kodai": "古代",
         "chusei": "中世", 
@@ -26,7 +25,6 @@ def get_era(era):
         "kindai": "近代", 
         "gendai": "現代"
     }
-    print(valid_eras[era])
     if era not in valid_eras.keys(): abort(404)
     else:
         memos = dp.get_parsed_data(database.find_all_memos_in_era(valid_eras[era]))
