@@ -1,0 +1,175 @@
+/* MEMO TEXT STYLES ================================================= */
+
+h1 { color: white; font-size: 28px; margin-bottom: 20px; }
+.memo-heading-container { margin: 10px 0; }
+.memo-heading {
+    text-align: center;
+    font-size: 18px;
+    color: var(--navy); 
+    background-color: var(--sea); 
+}
+
+/* MEMO LIST STYLES ================================================= */
+
+ul { list-style: none; }
+li { font-family: Hina; text-align: left; padding-bottom: 5px; }
+li::before {
+    content: "\2022";
+    font-weight: bold;
+    width: 1em;
+    display: inline-block;
+}
+
+/* MEMO TEXT-DECORATION STYLES ================================================= */
+
+.ruby { padding-top: 5px; }
+
+mark { background-color: var(--sun); color: var(--navy); }
+.tag-heading { background-color: var(--sea); color: var(--navy); margin-right: 15px; }
+.document-text { background-color: var(--ice); color: var(--navy); }
+.legislation { background-color: var(--red); color: var(--navy); }
+
+.place-text { color: var(--sea); --tooltip-color: var(--sea); }
+.key-text { color: var(--sun); --tooltip-color: var(--sun); }
+.key-person { text-shadow: 0 0 1.5px var(--red), 0 0 7px var(--red); color: var(--red); --tooltip-color: var(--red); }
+.tooltip-text { text-shadow: 0 0 1.5px var(--lime), 0 0 7px var(--lime); color: var(--lime); position: relative; --tooltip-color: var(--lime); }
+
+/* MEMO SUPERTEXT ELEMENTS ================================================= */
+
+.tooltip-text::after {
+    content: attr(data-tooltip);
+    
+    position: absolute;
+    left: 0; bottom: 22px;
+    width: 60px;
+    font-size: 0.6em;
+    
+    background: var(--tooltip-color);
+    color: var(--navy);
+
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px var(--tooltip-color);
+
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.tooltip-text:hover::after { opacity: 1; }
+
+/* MEMO TABLE STYLES ================================================= */
+
+th { white-space: wrap; text-align: center; min-width: 50px; }
+td, th {
+    border: 1px solid white;
+    border-collapse: collapse;
+    padding: 8px;
+    font-family: Hina;
+    text-align: left;
+}
+.table-heading { background-color: rgba(255, 255, 255, 0.2); color: var(--sea); }
+.table-subheading { font-weight: bold; background-color: transparent; color: var(--sea); }
+
+/* MEMO IMAGE STYLES ================================================= */
+
+.image-container {
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-around;
+    padding-top: 10px;
+}
+.image-col {
+    display: flex; 
+    flex-direction: column;
+    max-width: 100%; 
+    padding: 0 5px;
+}
+.image { max-height: 200px; max-width: 100%; border-radius: 10px 10px 0 0; }
+
+.image-caption-container { background-color: var(--red); padding: 5px; border-radius: 0 0 10px 10px; }
+.image-caption { font-size: 10px; }
+
+/* MEMO BOX STYLES ================================================= */
+
+.box-political {
+    border-radius: 10px;
+    background-color: var(--navy);
+    padding: 10px;
+    color: white;
+}
+.box-political-heading { 
+    color: white; 
+    opacity: 100%; 
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px white;
+ }
+
+.box-military {
+    border-radius: 10px;
+    background-color: var(--red);
+    padding: 10px;
+    color: var(--navy);
+}
+.box-military-heading { 
+    color: var(--navy); 
+    opacity: 100%; 
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px var(--navy);
+ }
+
+.box-culture {
+    border-radius: 10px;
+    background-color: var(--ice);
+    padding: 10px;
+    color: var(--navy);
+}
+.box-culture-heading { 
+    color: var(--navy); 
+    opacity: 100%; 
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px var(--navy);
+}
+
+.box-theory {
+    border-radius: 10px;
+    border: 2px solid var(--sea);
+    padding: 10px;
+    color: white;
+}
+.box-theory-heading { 
+    color: var(--sea); 
+    opacity: 100%; 
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px var(--sea);
+}
+
+/* MEMO DIAGRAM STYLES ================================================= */
+
+.hierarchy { width: 100%; display: flex; flex-direction: column; align-items: stretch; }
+.hierarchy-diagram { overflow-x: scroll; border: 3px solid var(--sea); margin-bottom: 10px; border-radius: 10px; }
+
+.node { cursor: pointer; }
+
+.node-caption {
+    border: 3px solid var(--sea);
+    padding: 15px;
+    border-radius: 10px;
+    display: none;
+}
+.node-caption-heading {
+    color: var(--sea);
+    font-size: 20px;
+    font-weight: bold;
+}
+.node-caption-text {
+    color: var(--sea);
+    margin-top: 10px;
+}
+
+.node-text { font-size: 12px; }
+.node-ruby { font-size: 6px; }
+
+.link {
+    fill: none;
+    stroke: white;
+    stroke-width: 1px;
+}

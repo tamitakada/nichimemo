@@ -11,8 +11,10 @@
 * {
     text-align: center;
     text-decoration: none;
-    margin: 0; padding: 0; 
     outline: none;
+    margin: 0; padding: 0;
+
+    font-family: Hina;
 
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2);
@@ -20,6 +22,7 @@
 
 *::-webkit-scrollbar {
     -webkit-appearance: none;
+    height: 5px;
     width: 5px;
 }
 *::-webkit-scrollbar-thumb {
@@ -29,35 +32,33 @@
 
 html, body { box-sizing: border-box; height: 100%; background-color: var(--navy); }
 
-/* @font-face { font-family: Hina; src: url("fonts/HinaMincho-Regular.ttf"); } */
 @font-face { font-family: Hina; src: url("fonts/HinaMincho-Regular.woff"); }
 
-h2 { font-family: Hina; font-size: 28px; margin: 10px 0; color: white; }
-h3 { font-family: Hina; font-size: 20px; writing-mode: vertical-lr; }
-p, ruby { font-family: Hina; text-align: left; padding: 0; margin: 0; }
-ul { list-style-image: url("arrow-bullet.svg"); }
-li { text-align: left; }
+h3 { font-size: 20px; writing-mode: vertical-lr; }
+h4 { color: white; padding-bottom: 10px; opacity: 40%; }
+p, ruby { text-align: left; padding: 0; margin: 0; }
 
-ul { list-style: none; }
-ul li::before {
+li { text-align: left; }
+.memo-list li::before {
     content: "\2022";
     font-weight: bold;
     width: 1em;
     display: inline-block;
 }
 
+footer a {
+    color: white;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+footer a:hover {
+    text-shadow: 0 0 1.5px white, 0 0 7px white;
+}
+
 table {
     border: 1px solid white;
     border-collapse: collapse;
-}
-
-th { color: var(--sea); background-color: rgba(255, 255, 255, 0.2); }
-
-td, th {
-    border: 1px solid white;
-    border-collapse: collapse;
-    padding: 8px;
-    text-align: left;
 }
 
 input {
