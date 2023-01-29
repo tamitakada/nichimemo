@@ -110,7 +110,7 @@ function loadDiagram(diagram) {
     for (let i = 0; i < data.length; i++) {
         var svg = d3.select(diagramContainer)
             .append("svg")
-            .attr("width", "" + (100 * data[i]["width"]) + "%")
+            .attr("width", data[i]["width"])
             .attr("height", data[i]["height"])
             .attr("viewBox", function() {
                 let width = parseInt(d3.select(this).style("width"));
@@ -120,10 +120,8 @@ function loadDiagram(diagram) {
             g = svg.append("g")
                 .attr("transform", "translate(0,70)");
 
-        let width = svg.node().getBoundingClientRect().width;
-
         var tree = d3.tree()
-            .size([width, data[i]["height"] - 120])
+            .size([data[i]["width"], data[i]["height"] - 120])
 
         let root = d3.hierarchy(data[i]["nodeData"]);
         tree(root);
