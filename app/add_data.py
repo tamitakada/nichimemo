@@ -16,7 +16,6 @@ if choice == "1":
             metadata[2],
             metadata[3],
             metadata[4],
-            metadata[6],
             metadata[5]
         )
 elif choice == "2":
@@ -28,36 +27,36 @@ elif choice == "2":
 
             memo_num = input("Which memo? ")
 
-            with open(input("File Path: ")) as f:
-                lines = f.read().split("\n\n\n")
-
-                metadata = lines[0].split("\n")
+            with open("../data/" + input("File Path: ../data/")) as f:
+                metadata = f.read().split("\n")
+                content = ""
+                with open("../data/" + metadata[1]) as dataf:
+                    content = dataf.read()
 
                 database.edit_memo(
                     memos[int(memo_num)]["id"],
-                    metadata[0],
-                    lines[1],
-                    metadata[1],
-                    metadata[2],
                     metadata[3],
-                    metadata[5],
-                    metadata[4]
+                    metadata[0],
+                    content,
+                    metadata[2],
+                    metadata[4],
+                    metadata[5]
                 )
         else:
-            with open(input("File Path: ")) as f:
-                lines = f.read().split("\n\n\n")
-
-                metadata = lines[0].split("\n")
+            with open("../data/" + input("File Path: ../data/")) as f:
+                metadata = f.read().split("\n")
+                content = ""
+                with open("../data/" + metadata[1]) as dataf:
+                    content = dataf.read()
 
                 database.edit_memo(
                     memos[0]["id"],
-                    metadata[0],
-                    lines[1],
-                    metadata[1],
-                    metadata[2],
                     metadata[3],
-                    metadata[5],
-                    metadata[4]
+                    metadata[0],
+                    content,
+                    metadata[2],
+                    metadata[4],
+                    metadata[5]
                 )
 elif choice == 3:
     memos = database.find_memos_matching_query(input("Memo query: "))
