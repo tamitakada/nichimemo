@@ -20,6 +20,7 @@
 
 .memo {
     background-color: var(--lightNavy);
+    border-radius: 10px;
     overflow-x: hidden;
     overflow-y: scroll;
     transition: transform 1s;
