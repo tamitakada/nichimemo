@@ -73,14 +73,14 @@ input {
     border-color: var(--lightNavy);
 
     font-family: Hina;
-    font-size: 20px;
+    font-size: 18px;
     color: white;
     text-align: left;
 }
 
 input::placeholder {
-    color: white;
-    text-shadow: 0 0 5px white;
+    color: rgba(255, 255, 255, 0.4);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
 }
 
 .center-row {

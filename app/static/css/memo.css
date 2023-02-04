@@ -28,6 +28,7 @@ mark { background-color: var(--sun); color: var(--navy); }
 .tag-heading { background-color: var(--sea); color: var(--navy); margin-right: 15px; }
 .document-text { background-color: var(--ice); color: var(--navy); }
 .legislation { background-color: var(--red); color: var(--navy); }
+.event { background-color: var(--lime); color: var(--navy); }
 
 .place-text { color: var(--sea); --tooltip-color: var(--sea); }
 .key-text { color: var(--sun); --tooltip-color: var(--sun); }
@@ -140,6 +141,19 @@ td, th {
     opacity: 100%; 
     font-weight: bold;
     -webkit-text-stroke: 0.3px var(--sea);
+}
+
+.box-progression {
+    border-radius: 10px;
+    border: 2px solid var(--lime);
+    padding: 10px;
+    color: white;
+}
+.box-progression-heading { 
+    color: var(--lime); 
+    opacity: 100%; 
+    font-weight: bold;
+    -webkit-text-stroke: 0.3px var(--lime);
 }
 
 /* MEMO DIAGRAM STYLES ================================================= */
