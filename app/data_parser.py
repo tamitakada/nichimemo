@@ -1,28 +1,17 @@
 def get_parsed_data(memos):
     for memo in memos:
-        memo["era_color"] = get_color_for_era(memo["era"], memo["time_period"])
+        memo["era_color"] = get_color_for_era(memo["era"])
         memo["citations_text"] = memo["citations"].split(",")
     return memos
 
-def get_color_for_era(era: str, time_period: str):
+def get_color_for_era(specific_era: str):
     eras = {
-        "原始・古代": "var(--red)",
-        "中世": "var(--sun)",
-        "近世": "var(--lime)",
-        "近代": "var(--sea)",
-        "現代": "var(--ice)"
+        "古代": (["縄文時代", "弥生時代", "古墳時代", "飛鳥時代", "奈良時代", "平安時代"], "var(--red)"),
+        "中世": (["鎌倉時代", "室町時代", "戦国時代"], "var(--sun)"),
+        "近世": (["江戸時代", "幕末"], "var(--lime)"),
+        "近代": (["明治時代", "昭和時代（戦前）", "第二次世界大戦"], "var(--sea)"),
+        "現代": (["昭和時代（戦後）", "平成時代"], "var(--ice)")
     }
 
-    years = time_period.split("-")
-    latest_year = years[0]
-    if len(years) > 1: latest_year = years[1]
-
-    if latest_year.__contains__("BC"): return eras["原始・古代"]
-    else:
-        latest_year = int(latest_year)
-        if latest_year < 1185: return eras["原始・古代"]
-        elif latest_year < 1568: return eras["中世"]
-        elif latest_year < 1868: return eras["近世"]
-        elif latest_year < 1945 or (latest_year == 1945 and era == "第二次世界大戦"): 
-            return eras["近代"]
-        else: return eras["現代"]
+    for key in eras.keys():
+        if specific_era in eras[key][0]: return eras[key][1]
