@@ -16,6 +16,17 @@ def get_home():
     ])
     return render_template("index.html", feature=True, memos=memos)
 
+@app.route("/test")
+def get_test():
+    memos = dp.get_parsed_data([
+        database.find_memo_by_id(58267),
+        database.find_memo_by_id(51366),
+        database.find_memo_by_id(67982),
+        database.find_memo_by_id(80544),
+        database.find_memo_by_id(38451)
+    ])
+    return render_template("test.html", memos=memos)
+
 @app.route("/<era>")
 def get_era(era):
     valid_eras = {
@@ -43,5 +54,5 @@ def get_search():
 
 if __name__ == "__main__":
     database.db_setup()
-    # app.debug = True
+    app.debug = True
     app.run(port=8000)
