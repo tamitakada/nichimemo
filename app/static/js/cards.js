@@ -69,7 +69,7 @@ function openMemoTab() {
 function adjustPageSize() {
     const pages = document.getElementsByClassName("page");
     if (pages[currentTabIndex] && window.matchMedia("(max-width: 800px)").matches) {
-        pages[currentTabIndex].style["flex"] = "0 0 100%";
+        pages[currentTabIndex].style["flex"] = "1";
     } else if (pages[currentTabIndex]) { pages[currentTabIndex].style["flex"] = "0 0 550px"; }
 }
 

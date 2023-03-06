@@ -1,6 +1,6 @@
-#construction-message {
-    
-}
+.banner { height: 30vh; width: 100%; background-color: var(--red); background-repeat: repeat; background-position: center; background-size: 450px 220px; border-radius: 20px; margin-bottom: 20px; transition: background-color 0.5s, transform 0.5s; }
+.banner-title { font-size: 40px; color: var(--navy); -webkit-text-stroke: 1px var(--navy); margin-bottom: 0;  }
+.banner-subtitle { font-size: 26px; color: var(--navy); -webkit-text-stroke: 1px var(--navy); margin-bottom: 0; }
 
 .message-face-text {
     color: rgba(255, 255, 255, 0.4);
@@ -47,8 +47,8 @@
     overflow-x: scroll;
     transition: border-color 0.3s;
 }
-.era-page-container { flex: 0 0 550px; justify-content: end; }
+.era-page-container { flex: 0 0 550px; display: flex; flex-direction: row; justify-content: end; }
 
 @media only screen and (max-width: 800px) {
-    .era-page-container { flex-direction: column; }
+    #era-container { flex-direction: column; }
 }
