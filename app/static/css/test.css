@@ -9,46 +9,35 @@
 }
 .message-text { color: rgba(255, 255, 255, 0.4); font-family: Hina; font-size: 24px; }
 
-.era-button {
-    writing-mode: vertical-rl;
-    font-size: 20px;
-    cursor: pointer;
-    flex: 1;
-
-    padding: 20px 10px; margin-bottom: 20px;
-    border-radius: 10px;
-    border: 3px solid var(--color);
-    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
-}
-.era-button:hover {
-    background-color: var(--color);
-    box-shadow: 0 0 10px var(--color);
-    color: var(--navy);
-}
-
-.era-button-inactive {
-    color: var(--color);
-    background-color: var(--navy);
-}
-.era-button-active {
-    background-color: var(--color);
-    box-shadow: 0 0 10px var(--color);
-    color: var(--navy);
-}
+.era-button { position: relative; z-index: 0; transform: translateX(8px); transition: transform 0.3s; cursor: pointer; }
+.era-button h3 { color: var(--navy); transition: color 0.3s; position: absolute; top: 30px; left: 50%; transform: translateX(calc(-50% - 2px)); }
+.era-button svg { position: relative; top: 0; left: 0; }
+.era-button:hover { transform: translateX(2px); }
 
 #era-container {
-    flex: 1; min-height: 626px;
+    flex: 1; min-height: 637px; z-index: 1;
     display: flex; flex-direction: row; justify-content: center;
     background-color: var(--navy);
     border: 6px solid var(--red); 
     border-radius: 0 0 0 20px; 
     border-style: none none solid solid; 
-    padding: 0 0 20px 20px; margin-left: 20px;
+    padding: 0 0 20px 20px;
     overflow-x: scroll;
     transition: border-color 0.3s;
 }
 .era-page-container { flex: 0 0 550px; display: flex; flex-direction: row; justify-content: end; }
 
+#memo-button {
+    width: 50px; height: 50px; 
+    border-radius: 30px; 
+    position: absolute; bottom: 5px; left: 10px; z-index: 3; 
+    border: 3px solid white;
+    background-color: rgba(41, 51, 78, 0.5);
+    transition: transform 0.3s;
+}
+#memo-button:hover { transform: scale(0.9); }
+
 @media only screen and (max-width: 800px) {
     #era-container { flex-direction: column; }
+    .era-page-container { flex: 1; }
 }

@@ -4,31 +4,34 @@ def get_parsed_data(memos):
         memo["citations_text"] = memo["citations"].split(",")
     return memos
 
-def get_stringified_data(memos):
+def get_stringified_data(memos, tick_keys):
+    proper_quote = "\\\"" if tick_keys else "\""
     if len(memos) > 1:
-        all_memo_data = "{\"memos\": ["
+        all_memo_data = "{" + proper_quote + "memos" + proper_quote + ": ["
         for i in range(len(memos)):
             memo = memos[i]
             memo["era_color"] = get_color_for_era(memo["era"])
             memo["citations_text"] = memo["citations"].split(",")
-            all_memo_data += stringify_memo_data(memo)
+            all_memo_data += stringify_memo_data(memo, tick_keys)
             if i == len(memos) - 1: all_memo_data += "]}"
             else: all_memo_data += ", "
         return all_memo_data
-    return "{\"memos\": []}"
+    return "{" + proper_quote + "memos" + proper_quote + ": []}"
 
-def stringify_memo_data(memo_data):
+def stringify_memo_data(memo_data, tick_keys):
     memo_str = "{";
+    proper_quote = "\\\"" if tick_keys else "\""
+    proper_double_quote = "\\\\\\\"" if tick_keys else "\\\""
     for key in memo_data.keys():
         if key == "id": continue
         elif key == "citations": continue
         elif key == "content":
-            memo_content_formatted = memo_data["content"].replace("\"", "\\\"").replace("\n", "")
-            memo_str += "\"content\": \"" + memo_content_formatted + "\", "
+            memo_content_formatted = memo_data["content"].replace("\"", proper_double_quote).replace("\n", "")
+            memo_str += proper_quote + "content" + proper_quote + ": " + proper_quote + memo_content_formatted + proper_quote + ", "
         elif key == "citations_text":
-            memo_str += "\"citations\": " + str(memo_data["citations_text"]).replace("'", "\"") + ", "
+            memo_str += proper_quote + "citations" + proper_quote + ": " + str(memo_data["citations_text"]).replace("'", proper_quote) + ", "
         else:
-            memo_str += "\"" + key + "\": \"" + str(memo_data[key]).replace("'", "\"") + "\", "
+            memo_str += proper_quote + key + proper_quote + ": " + proper_quote + str(memo_data[key]).replace("'", proper_quote) + proper_quote + ", "
     memo_str = memo_str[:-2]
     memo_str += "}"
     return memo_str

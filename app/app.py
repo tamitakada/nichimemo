@@ -7,8 +7,10 @@ app = Flask(__name__)
 
 @app.route("/")
 def get_home():
-    memos = dp.get_parsed_data(database.find_all_memos_in_era("古代"))
-    return render_template("test2.html", memos=memos)
+    initial_search = database.find_all_memos_in_era("古代")
+    memos = dp.get_parsed_data(initial_search)
+    initial_memo_data = dp.get_stringified_data(initial_search, True);
+    return render_template("index.html", memos=memos, initial_memo_data=initial_memo_data)
 
 @app.route("/api/<era>", methods=["GET"])
 def get_memo_data(era):
@@ -21,13 +23,13 @@ def get_memo_data(era):
     }
     if era not in valid_eras.keys(): abort(404)
     else:
-        memos = dp.get_stringified_data(database.find_all_memos_in_era(valid_eras[era]))
+        memos = dp.get_stringified_data(database.find_all_memos_in_era(valid_eras[era]), False)
         return memos
 
 @app.route("/search")
 def get_search():
     query = request.args['q']
-    memos = dp.get_parsed_data(database.find_memos_matching_query(query))
+    memos = dp.get_parsed_data(database.find_memos_matching_query(query.upper()))
 
     return render_template(
         "index.html",
