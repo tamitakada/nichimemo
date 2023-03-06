@@ -1,0 +1,54 @@
+#construction-message {
+    
+}
+
+.message-face-text {
+    color: rgba(255, 255, 255, 0.4);
+    font-family: Hina; font-size: 50px;
+    margin-bottom: 30px;
+}
+.message-text { color: rgba(255, 255, 255, 0.4); font-family: Hina; font-size: 24px; }
+
+.era-button {
+    writing-mode: vertical-rl;
+    font-size: 20px;
+    cursor: pointer;
+    flex: 1;
+
+    padding: 20px 10px; margin-bottom: 20px;
+    border-radius: 10px;
+    border: 3px solid var(--color);
+    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+}
+.era-button:hover {
+    background-color: var(--color);
+    box-shadow: 0 0 10px var(--color);
+    color: var(--navy);
+}
+
+.era-button-inactive {
+    color: var(--color);
+    background-color: var(--navy);
+}
+.era-button-active {
+    background-color: var(--color);
+    box-shadow: 0 0 10px var(--color);
+    color: var(--navy);
+}
+
+#era-container {
+    flex: 1; min-height: 626px;
+    display: flex; flex-direction: row; justify-content: center;
+    background-color: var(--navy);
+    border: 6px solid var(--red); 
+    border-radius: 0 0 0 20px; 
+    border-style: none none solid solid; 
+    padding: 0 0 20px 20px; margin-left: 20px;
+    overflow-x: scroll;
+    transition: border-color 0.3s;
+}
+.era-page-container { flex: 0 0 550px; justify-content: end; }
+
+@media only screen and (max-width: 800px) {
+    .era-page-container { flex-direction: column; }
+}

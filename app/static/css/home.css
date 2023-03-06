@@ -1,41 +1,23 @@
-body { padding: 20px; }
+.banner { height: 30vh; width: 100%; background-color: var(--red); background-repeat: repeat; background-position: center; background-size: 450px 220px; border-radius: 20px; transition: background-color 0.5s, transform 0.5s; }
+.banner-title { font-size: 40px; color: var(--navy); -webkit-text-stroke: 1px var(--navy); margin-bottom: 0;  }
+.banner-subtitle { font-size: 26px; color: var(--navy); -webkit-text-stroke: 1px var(--navy); margin-bottom: 0; }
 
-.banner { height: 30vh; width: 100%; background-color: var(--red); background-repeat: repeat; background-position: center; background-size: 450px 220px; border-radius: 20px; }
-.banner-title { font-size: 40px; color: var(--navy); -webkit-text-stroke: 1px var(--navy); margin-bottom: 5px; }
-.banner-subtitle { font-size: 24px; color: var(--navy); -webkit-text-stroke: 1px var(--navy); margin-bottom: 0; }
-
-#jidai-container {
-    justify-content: space-around; 
-    width: 100%; max-width: 1100px; 
-    padding: 20px;
+#feature-title-container {
+    box-shadow: 8px 0 6px rgba(56, 70, 105, 0.8); 
+    padding: 0 20px; z-index: 3;
 }
-.jidai-display-text {
-    font-size: 180px;
-    margin-bottom: 0;
-    text-align: center;
-    color: var(--lightNavy);
+#feature-container {
+    display: flex; flex-direction: row;
+    background-color: var(--lightNavy); 
+    height: 60vh; 
+    border-radius: 20px; 
+    margin-top: 20px; padding: 20px 0;
+    overflow: hidden;
 }
-
-.jidai-link-container { width: 50px; height: 200px; position: relative; }
-.jidai-link {
-    position: absolute;
-    transform: translateX(-50%);
-    aspect-ratio: 1;
-    border-radius: 50%;
-    transition: 0.5s;
-}
-.jidai-link:hover { transform: translateX(-50%) scale(1.1); }
-
-.jidai-link-text {  
-    color: var(--navy);
-    -webkit-text-stroke: 1px var(--navy);
-    font-size: 30px;
-    writing-mode: vertical-rl;
-}
-
 .feature-memo {
     height: 100%;
-    min-width: 510px;
+    flex: 0 0 80%;
+    max-width: 510px;
     scroll-snap-align: center;
     margin-right: 20px;
     border-radius: 20px;
@@ -43,8 +25,20 @@ body { padding: 20px; }
     overflow-y: scroll;
 }
 
-@media only screen and (max-width: 400px) {
-    #jidai-container { flex-direction: column; height: 1200px; }
-    .jidai-display-text { font-size: 140px; }
-    .jidai-link-container { height: 50px; }
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    align-items: center; 
+    background-color: var(--lightNavy); 
+    margin-bottom: 20px; padding: 20px; 
+    border-radius: 20px;
+}
+
+@media only screen and (max-width: 870px) {
+    nav { flex-direction: column; }
+    nav .flex-row { margin-bottom: 20px; }
+    #feature-container { flex-direction: column; }
+    #feature-title-container { padding-bottom: 20px; }
+    #feature-title-container h3 { writing-mode: horizontal-tb; }
 }

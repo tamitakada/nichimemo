@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="flex-row" style="align-items: stretch;">
+        <div class="flex-col" >
+            <div id="kodai" class="era-button era-button-active" style="--color: var(--red);">古代</div>
+            <div id="chusei" class="era-button era-button-inactive" style="--color: var(--sun);">中世</div>
+            <div id="kinsei" class="era-button era-button-inactive" style="--color: var(--lime);">近世</div>
+            <div id="kindai" class="era-button era-button-inactive" style="--color: var(--sea);">近代</div>
+            <div id="gendai" class="era-button era-button-inactive" style="margin-bottom: 0; --color: var(--ice);">現代</div>
+        </div>
+
+        <div id="era-container">
+            <div id="construction-message" class="center-col" style="display: none;">
+                <h2 class="message-face-text">“く(-へ-)</h2>
+                <h2 class="message-text">近日公開の予定です</h2>
+            </div>
+
+            <div class="era-page-container flex-row">
+                {% for memo in memos %}
+                <div class="page" {% if loop.index == 1 %}style="flex: 0 0 550px;"{% endif %}>
+                    <div class="memo">{{ memo["content"]|safe }}</div>
+                    <div class="citation">
+                        <h2 style="margin-bottom: 20px; color: var(--navy);">参考文献</h2>
+                        <ul class="memo-list">
+                        {% for citation in memo["citations_text"] %}
+                            <li style="color: var(--navy); font-family: Hina;">
+                                {{ citation }}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="tab-container flex-row">
+                <div class="tab" style="color: var(--navy); margin-left: 15px; border: 3px solid var(--navy); background-color: {{ memos[0]['era_color'] }}; box-shadow: 0 0 10px {{ memos[0]['era_color'] }};">
+                    <h3>{{ memos[0]["title"] }}</h3>
+                </div>
+                {% for memo in memos %}
+                {% if loop.index > 1 %}
+                <div class="tab" style="color: {{ memo['era_color'] }}; border-color: {{ memo['era_color'] }};">
+                    <h3>{{ memo["title"] }}</h3>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+    <!-- <script>loadAllDiagramsForMemo(0);</script> -->
+    <script>
+        const eraContainer = document.getElementById("era-container");
+        const eraButtons = document.getElementsByClassName("era-button");
+        const eraMemoData = {"koda": []};
+        let currentEra = "kodai";
+
+        function changeEraButtonState(button) {
+            if (button.classList.contains("era-button-inactive")) {
+                button.classList.remove("era-button-inactive");
+                button.classList.add("era-button-active");
+            }
+
+            for (let i = 0; i < eraButtons.length; i++) {
+                if (eraButtons[i] != button) {
+                    if (!eraButtons[i].classList.contains("era-button-inactive")) {
+                        eraButtons[i].classList.add("era-button-inactive")
+                    }
+                    if (eraButtons[i].classList.contains("era-button-active")) {
+                        eraButtons[i].classList.remove("era-button-active");
+                    }
+                }
+            }
+        }
+
+        for (let i = 0; i < eraButtons.length; i++) {
+            eraButtons[i].addEventListener("click", () => { 
+                changeEraButtonState(eraButtons[i]);
+                requestEraData(eraButtons[i].id);
+            });
+        }
+
+        function createTextElement(textTag, text) {
+            const newElement = document.createElement(textTag);
+            newElement.appendChild(document.createTextNode(text));
+            return newElement;
+        }
+
+        function createClassElement(classnames) {
+            const newElement = document.createElement("div");
+            for (let i = 0; i < classnames.length; i++) {
+                newElement.classList.add(classnames[i]);
+            }
+            return newElement;
+        }
+
+        const tabContainer = document.getElementsByClassName("tab-container")[0];
+        const eraPageContainer = document.getElementsByClassName("era-page-container")[0];
+
+        function clearTabsAndPages() {
+            const currentPages = eraPageContainer.querySelectorAll(".page");
+            for (let i = currentPages.length - 1; i >= 0; i--) {
+                eraPageContainer.removeChild(currentPages[i]);
+            }
+
+            const currentTabs = tabContainer.querySelectorAll(".tab");
+            for (let i = currentPages.length - 1; i >= 0; i--) {
+                tabContainer.removeChild(currentTabs[i]);
+            }
+        }
+
+        const constructionMessage = document.getElementById("construction-message");
+        function displayConstructionPage() {
+            eraPageContainer.style.display = "none";
+            tabContainer.style.display = "none";
+            constructionMessage.style.display = "flex";
+        }
+
+        function loadEraPages(era) {
+            eraPageContainer.style.display = "flex";
+            tabContainer.style.display = "flex";
+            constructionMessage.style.display = "none";
+
+            for (let i = 0; i < eraMemoData[era].length; i++) {
+                const newPage = createClassElement(["page"]);
+                if (i == 0) { newPage.style["flex"] = "0 0 550px"; }
+
+                const newMemo = createClassElement(["memo"]);
+                newMemo.innerHTML = eraMemoData[era][i]["content"];
+                newPage.appendChild(newMemo);
+                eraPageContainer.appendChild(newPage);
+
+                const newTab = createClassElement(["tab"]);
+                if (i == 0) {
+                    newTab.style.color = "var(--navy)";
+                    newTab.style.borderColor = "var(--navy)";
+                    newTab.style.backgroundColor = eraColors[era];
+                    newTab.style.boxShadow = `0 0 10px ${eraColors[era]}`;
+                } else {
+                    newTab.style.color = eraMemoData[era][i]["era_color"];
+                    newTab.style.borderColor = eraMemoData[era][i]["era_color"];
+                }
+                newTab.appendChild(createTextElement("h3", eraMemoData[era][i]["title"]));
+                tabContainer.appendChild(newTab);
+            }
+
+            addTabs();
+            currentEra = era;
+        }
+
+        function requestEraData(era) {
+            clearTabsAndPages();
+            eraContainer.style.borderColor = eraColors[era];
+
+            if (!(era in eraMemoData) || eraMemoData[era].length == 0) { 
+                const httpRequest = new XMLHttpRequest();
+                httpRequest.onreadystatechange = () => {
+                    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                        if (httpRequest.status === 200) {
+                            const newEraMemoData = JSON.parse(httpRequest.responseText);
+                            if (newEraMemoData["memos"].length == 0) { displayConstructionPage(); }
+                            else { 
+                                eraMemoData[era] = newEraMemoData["memos"];
+                                loadEraPages(era); 
+                            }
+                        } else {
+                            console.log("Error loading stuff");
+                        }
+                    } else {
+                        // Loading
+                    }
+                }
+                httpRequest.open("GET", `/api/${era}`, true);
+                httpRequest.send();
+            } else { loadEraPages(era); }
+        }
+        
+    </script>
+    <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
+
+{% endblock %}

@@ -2,13 +2,6 @@
 
 {% block content %}
 
-<img src="{{ url_for('static', filename='images/joto-logo.svg') }}" style="width: 100px;" />
-<p style="padding-top: 10px; padding-left: 10px; opacity: 40%; font-size: 12px; letter-spacing: 10px; text-align: center; color: white;">常灯日本史メモ</p>
-
-<form style="margin: 20px 0;" action="/search" >
-    <input type="text" placeholder="調べたい時代・人物・歴史出来事などを入力" autocomplete="off" name="q" {% if query|length > 0 %} value="{{ query }}" {% endif %} >
-</form>
-
 {% if feature %}
 <h2 style="background-color: transparent; padding: 25px 0 30px 15px; color: white; opacity: 40%; letter-spacing: 15px; font-size: 20px;">ピックアップ</h2>
 {% endif %}
@@ -45,7 +38,7 @@
         </div>
     </div>
 
-    <div id="tab-container" class="flex-row" style="padding: 10px 0; justify-content: start; overflow: auto; flex: 1;">
+    <div id="tab-container" class="flex-row" style="align-items: flex-end; padding-bottom: 10px; justify-content: start; overflow: auto; flex: 1;">
         <div class="tab" style="color: var(--navy); margin-left: 15px; border: 3px solid var(--navy); background-color: {{ memos[0]['era_color'] }}; box-shadow: 0 0 10px {{ memos[0]['era_color'] }};">
             <h3>{{ memos[0]["title"] }}</h3>
         </div>
@@ -60,6 +53,7 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
+<script>loadAllDiagramsForMemo(0);</script>
 
 {% else %}
 

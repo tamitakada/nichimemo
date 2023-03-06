@@ -1,47 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>常灯日本史メモ</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/memo.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/nichimemo-logo.png') }}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-</head>
-<body>
-    
-    <div class="flex-row" style="justify-content: space-between; align-items: center; background-color: var(--lightNavy); margin-bottom: 20px; padding: 20px; border-radius: 20px;">
-        <div class="flex-row">
-            <img src="{{ url_for('static', filename='images/joto-logo.svg') }}" style="width: 60px; margin-right: 15px;" />
-            <p style="color: var(--sun); font-size: 20px;">常灯<br>日本史メモ</p>
-        </div>
-        <input type="text" placeholder="調べたい時代・人物・歴史出来事などを入力" autocomplete="off" name="q"></input>
-    </div>
+{% extends "base.html" %}
 
-    <div class="banner center-col" style="background-image: url({{ url_for('static', filename='images/confetti-tile.svg') }});">
-        <h1 class="banner-title">古代史メモ</h1>
-        <h1 class="banner-subtitle">完成</h1>
-    </div>
+{% block content %}
 
-    <div class="flex-row" style="background-color: var(--lightNavy); height: 60vh; border-radius: 20px; margin: 20px 0; overflow: hidden;">
-        <div style="box-shadow: 8px 0 6px rgba(56, 70, 105, 0.8); padding: 20px; z-index: 3;">
-            <h3 style="color: white; letter-spacing: 15px; height: 100%; text-align: center;">ピックアップ</h3>
-        </div>
-        <div class="flex-row" style="overflow: auto; scroll-snap-type: x mandatory; flex-grow: 1; padding: 20px 0; padding-left: 10px;">
-            
-            {% for memo in memos %}
-            <div class="feature-memo">
-                <div class="memo" style="width: 100%; color: white; padding: 20px;">
-                    {{ memo["content"]|safe }}
-                </div>
+<div class="banner center-col" style="background-image: url({{ url_for('static', filename='images/confetti-tile.svg') }});">
+    <h1 class="banner-title">古代史メモ</h1>
+    <h1 class="banner-subtitle">完成</h1>
+    <a class="text-button" data-text="今すぐ見る &#8594;" href="/kodai" style="margin-top: 10px; --normal-color: var(--red); --hover-color: var(--navy); --normal-text-color: var(--navy); --hover-text-color: white;">今すぐ見る &#8594;</a>
+</div>
+
+<div id="feature-container">
+    <div id="feature-title-container">
+        <h3 style="color: white; letter-spacing: 15px; text-align: center;">ピックアップ</h3>
+    </div>
+    <div class="flex-row" style="overflow: auto; scroll-snap-type: x mandatory; flex-grow: 1; padding-left: 20px;">
+        {% for memo in memos %}
+        <div class="feature-memo">
+            <div class="memo" style="width: 100%; color: white; padding: 20px 15px 20px 20px;">
+                {{ memo["content"]|safe }}
             </div>
-            {% endfor %}
-            
         </div>
+        {% endfor %}
     </div>
+</div>
 
-</body>
-</html>
+<script>loadAllDiagrams();</script>
+
+{% endblock %}

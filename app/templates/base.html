@@ -5,14 +5,28 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/memo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/test.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/nichimemo-logo.png') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="{{ url_for('static', filename='js/diagram.js') }}"></script>
 </head>
 <body>
 
     <div style="padding: 20px;">
+
+        <nav>
+            <div class="flex-row">
+                <img src="{{ url_for('static', filename='images/joto-logo.svg') }}" style="width: 60px; margin-right: 15px;" />
+                <p style="color: var(--sun); font-size: 20px;">常灯<br>日本史メモ</p>
+            </div>
+        
+            <form action="/search" >
+                <input type="text" placeholder="調べたい人物・出来事などを入力" autocomplete="off" name="q" {% if query|length > 0 %} value="{{ query }}" {% endif %}></input>
+            </form>
+        </nav>        
 
         {% block content %}{% endblock %}
 
