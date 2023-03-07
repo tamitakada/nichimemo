@@ -1,18 +1,36 @@
+def get_sorted_data(memos):
+    sorted_memos = {"kodai": [], "chusei": [], "kinsei": [], "kindai": [], "gendai": []}
+    eras = {
+        "kodai": ["縄文時代", "弥生時代", "古墳時代", "飛鳥時代", "奈良時代", "平安時代"],
+        "chusei": ["鎌倉時代", "室町時代", "戦国時代"],
+        "kinsei": ["江戸時代", "幕末"],
+        "kindai": ["明治時代", "昭和時代（戦前）", "第二次世界大戦"],
+        "gendai": ["昭和時代（戦後）", "平成時代"]
+    }
+    for memo in memos:
+        memo_era = ""
+        for era in eras.keys():
+            if memo["era"] in eras[era]: memo_era = era
+        sorted_memos[memo_era].append(memo)
+    return sorted_memos
+
 def get_parsed_data(memos):
     for memo in memos:
         memo["era_color"] = get_color_for_era(memo["era"])
         memo["citations_text"] = memo["citations"].split(",")
     return memos
 
+def get_single_stringified_data(memo, tick_keys):
+    memo["era_color"] = get_color_for_era(memo["era"])
+    memo["citations_text"] = memo["citations"].split(",")
+    return stringify_memo_data(memo, tick_keys)
+
 def get_stringified_data(memos, tick_keys):
     proper_quote = "\\\"" if tick_keys else "\""
     if len(memos) > 1:
         all_memo_data = "{" + proper_quote + "memos" + proper_quote + ": ["
         for i in range(len(memos)):
-            memo = memos[i]
-            memo["era_color"] = get_color_for_era(memo["era"])
-            memo["citations_text"] = memo["citations"].split(",")
-            all_memo_data += stringify_memo_data(memo, tick_keys)
+            all_memo_data += get_single_stringified_data(memos[i], tick_keys)
             if i == len(memos) - 1: all_memo_data += "]}"
             else: all_memo_data += ", "
         return all_memo_data

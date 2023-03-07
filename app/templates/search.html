@@ -43,14 +43,8 @@
 
         <div id="era-container" style="position: relative;">
             <div id="message" class="center-col" style="display: none;">
-                <div id="loading-spinner" style="position: relative;">
-                    <svg style="position: relative;" class="spinner" width="140" height="140" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="100" cy="100" r="97" stroke="var(--sun)" stroke-width="8"/>
-                    </svg>
-                    <img style="width: 50px; position: absolute; top: 29px; left: 45px;" src="{{ url_for('static', filename='images/nichimemo-logo-standalone.svg') }}" />
-                </div>
-                <h2 id="message-face" class="message-face-text">“く(-へ-)</h2>
-                <h2 id="message-body" class="message-text">現在準備中です</h2>
+                <h2 id="message-face" class="message-face-text">(◉.◉)</h2>
+                <h2 id="message-body" class="message-text">該当する項目は見つかりませんでした</h2>
             </div>
 
             <div id="memo-button" class="center-col" >
@@ -89,14 +83,22 @@
             </div>
         </div>
 
-    <script>const eraMemoData = {"kodai": JSON.parse("{{ initial_memo_data|safe }}")["memos"] };</script>
+    <script>
+        const eraMemoData = {
+            "kodai": JSON.parse("{{ initial_memo_data['kodai']|safe }}")["memos"],
+            "chusei": JSON.parse("{{ initial_memo_data['chusei']|safe }}")["memos"],
+            "kinsei": JSON.parse("{{ initial_memo_data['kinsei']|safe }}")["memos"],
+            "kindai": JSON.parse("{{ initial_memo_data['kindai']|safe }}")["memos"],
+            "gendai": JSON.parse("{{ initial_memo_data['gendai']|safe }}")["memos"] 
+        };
+    </script>
     <script src="{{ url_for('static', filename='js/memo.js') }}"></script>
     <script>
         loadAllDiagramsForMemo(0);
         const eraButtons = document.getElementsByClassName("era-button");
         for (let i = 0; i < eraButtons.length; i++) {
             eraButtons[i].addEventListener("click", () => { 
-                requestEraData(eraButtons[i].id);
+                loadEraDataForQuery(eraButtons[i].id);
             });
         }
     </script>

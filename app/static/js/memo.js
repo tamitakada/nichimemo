@@ -17,121 +17,41 @@ function createClassElement(classnames) {
     return newElement;
 }
 
-// ERA BUTTONS ===========================================================
+// ALERT DISPLAYS ===========================================================
 
-const eraButtons = document.getElementsByClassName("era-button");
-for (let i = 0; i < eraButtons.length; i++) {
-    eraButtons[i].addEventListener("click", () => { 
-        requestEraData(eraButtons[i].id);
-    });
-}
+const messageDiv = document.getElementById("message");
+const messageText = document.getElementById("message-body");
+const messageFace = document.getElementById("message-face");
+const loadingSpinner = document.getElementById("loading-spinner");
 
-// PAGE & TAB UI MANAGEMENT ===========================================================
-
-const tabContainer = document.getElementsByClassName("tab-container")[0];
-const eraPageContainer = document.getElementsByClassName("era-page-container")[0];
-
-function clearTabsAndPages() {
-    const currentPages = eraPageContainer.querySelectorAll(".page");
-    for (let i = currentPages.length - 1; i >= 0; i--) {
-        eraPageContainer.removeChild(currentPages[i]);
-    }
-
-    const currentTabs = tabContainer.querySelectorAll(".tab");
-    for (let i = currentPages.length - 1; i >= 0; i--) {
-        tabContainer.removeChild(currentTabs[i]);
-    }
-}
-
-const constructionMessage = document.getElementById("construction-message");
-function displayConstructionPage() {
+function displayMessage() {
     eraPageContainer.style.display = "none";
     tabContainer.style.display = "none";
-    constructionMessage.style.display = "flex";
+    messageDiv.style.display = "flex";
+    messageFace.style.display = "block";
+    messageText.style.display = "block";
 }
 
-function loadEraPages(era) {
-    eraPageContainer.style.display = "flex";
-    tabContainer.style.display = "flex";
-    constructionMessage.style.display = "none";
-
-    for (let i = 0; i < eraMemoData[era].length; i++) {
-        const newPage = createClassElement(["page"]);
-        if (i == 0) {
-            newPage.style["flex"] = window.matchMedia("(max-width: 800px)").matches ? "1" : "0 0 550px"; 
-        }
-
-        const newMemo = createClassElement(["memo"]);
-        newMemo.innerHTML = eraMemoData[era][i]["content"];
-        newPage.appendChild(newMemo);
-
-        const newCitation = createClassElement(["citation"]);
-
-        const citationHeader = createTextElement("h2", "参考文献");
-        citationHeader.style = "margin-bottom: 20px; color: var(--navy);";
-        newCitation.appendChild(citationHeader);
-
-        const citationList = document.createElement("ul");
-        for (let j = 0; j < eraMemoData[era][i]["citations"].length; j++) {
-            const newCitationItem = document.createElement("li");
-            newCitationItem.style = "color: var(--navy); font-family: Hina;";
-            newCitationItem.innerHTML = eraMemoData[era][i]["citations"][j];
-            citationList.appendChild(newCitationItem);
-        }
-        newCitation.appendChild(citationList);
-        newPage.appendChild(newCitation);
-
-        eraPageContainer.appendChild(newPage);
-
-        const newTab = createClassElement(["tab"]);
-        if (i == 0) {
-            newTab.style.color = "var(--navy)";
-            newTab.style.borderColor = "var(--navy)";
-            newTab.style.backgroundColor = eraColors[era];
-            newTab.style.boxShadow = `0 0 10px ${eraColors[era]}`;
-        } else {
-            newTab.style.color = eraMemoData[era][i]["era_color"];
-            newTab.style.borderColor = eraMemoData[era][i]["era_color"];
-        }
-        newTab.appendChild(createTextElement("h3", eraMemoData[era][i]["title"]));
-        tabContainer.appendChild(newTab);
-    }
-
-    addTabs();
-    currentEra = era;
+function displayConstructionMessage() {
+    loadingSpinner.style.display = "none";
+    messageFace.innerHTML = "“く(-へ-)";
+    messageText.innerHTML = "現在準備中です";
+    displayMessage();
 }
 
-// AJAX REQUEST ===========================================================
-
-function requestEraData(era) {
-    clearTabsAndPages();
-    eraContainer.style.borderColor = eraColors[era];
-
-    if (!(era in eraMemoData) || eraMemoData[era].length == 0) { 
-        const httpRequest = new XMLHttpRequest();
-        httpRequest.onreadystatechange = () => {
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200) {
-                    const newEraMemoData = JSON.parse(httpRequest.responseText);
-                    if (newEraMemoData["memos"].length == 0) { displayConstructionPage(); }
-                    else { 
-                        eraMemoData[era] = newEraMemoData["memos"];
-                        loadEraPages(era); 
-                    }
-                } else {
-                    console.log("Error loading stuff");
-                }
-            } else {
-                // Loading
-            }
-        }
-        httpRequest.open("GET", `/api/${era}`, true);
-        httpRequest.send();
-    } else { loadEraPages(era); }
+function displayErrorMessage() {
+    loadingSpinner.style.display = "none";
+    messageFace.innerHTML = "(⚆Д⚆)";
+    messageText.innerHTML = "データの取得に失敗しました";
+    displayMessage();
 }
 
-let currentTabIndex = 0;
-const eraColors = {"kodai": "var(--red)", "chusei": "var(--sun)", "kinsei": "var(--lime)", "kindai": "var(--sea)", "gendai": "var(--ice)" };
+function displayLoadingMessage() {
+    displayMessage();
+    loadingSpinner.style.display = "block";
+    messageFace.style.display = "none";
+    messageText.style.display = "none";
+}
 
 // MEMO TAB ORGANIZATION ===========================================================
 
@@ -144,6 +64,120 @@ function switchPageTab() {
     const memos = document.getElementsByClassName("memo");
     memos[currentTabIndex].style.transform = isMemoOpen ? "none" : "translateY(100%)";
 }
+
+// PAGE & TAB UI MANAGEMENT ===========================================================
+
+const tabContainer = document.getElementsByClassName("tab-container")[0];
+const eraPageContainer = document.getElementsByClassName("era-page-container")[0];
+
+function clearTabsAndPages() {
+    currentTabIndex = 0;
+    isMemoOpen = true;
+
+    const currentPages = eraPageContainer.querySelectorAll(".page");
+    for (let i = currentPages.length - 1; i >= 0; i--) {
+        eraPageContainer.removeChild(currentPages[i]);
+    }
+
+    const currentTabs = tabContainer.querySelectorAll(".tab");
+    for (let i = currentPages.length - 1; i >= 0; i--) {
+        tabContainer.removeChild(currentTabs[i]);
+    }
+}
+
+function loadEraPages(era) {
+    eraPageContainer.style.display = "flex";
+    tabContainer.style.display = "flex";
+    messageDiv.style.display = "none";
+
+    if (eraMemoData[era].length == 0) { 
+        memoButton.style.display = "none";
+        displayMessage(); 
+    } else {
+        memoButton.style.display = "flex";
+        for (let i = 0; i < eraMemoData[era].length; i++) {
+            const newPage = createClassElement(["page"]);
+            if (i == 0) {
+                newPage.style["flex"] = window.matchMedia("(max-width: 800px)").matches ? "1" : "0 0 550px"; 
+            }
+
+            const newMemo = createClassElement(["memo"]);
+            newMemo.innerHTML = eraMemoData[era][i]["content"];
+            newPage.appendChild(newMemo);
+
+            const newCitation = createClassElement(["citation"]);
+
+            const citationHeader = createTextElement("h2", "参考文献");
+            citationHeader.style = "margin-bottom: 20px; color: var(--navy);";
+            newCitation.appendChild(citationHeader);
+
+            const citationList = document.createElement("ul");
+            for (let j = 0; j < eraMemoData[era][i]["citations"].length; j++) {
+                const newCitationItem = document.createElement("li");
+                newCitationItem.style = "color: var(--navy); font-family: Hina;";
+                newCitationItem.innerHTML = eraMemoData[era][i]["citations"][j];
+                citationList.appendChild(newCitationItem);
+            }
+            newCitation.appendChild(citationList);
+            newPage.appendChild(newCitation);
+
+            eraPageContainer.appendChild(newPage);
+
+            const newTab = createClassElement(["tab"]);
+            if (i == 0) {
+                newTab.style.color = "var(--navy)";
+                newTab.style.borderColor = "var(--navy)";
+                newTab.style.backgroundColor = eraColors[era];
+                newTab.style.boxShadow = `0 0 10px ${eraColors[era]}`;
+            } else {
+                newTab.style.color = eraMemoData[era][i]["era_color"];
+                newTab.style.borderColor = eraMemoData[era][i]["era_color"];
+            }
+            newTab.appendChild(createTextElement("h3", eraMemoData[era][i]["title"]));
+            tabContainer.appendChild(newTab);
+        }
+
+        addTabs();
+    }
+
+    currentEra = era;
+}
+
+// AJAX REQUEST ===========================================================
+
+function loadEraDataForQuery(era) {
+    clearTabsAndPages();
+    eraContainer.style.borderColor = eraColors[era];
+    loadEraPages(era);
+}
+
+function requestEraData(era) {
+    clearTabsAndPages();
+    eraContainer.style.borderColor = eraColors[era];
+
+    if (!(era in eraMemoData) || eraMemoData[era].length == 0) { 
+        const httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = () => {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
+                    const newEraMemoData = JSON.parse(httpRequest.responseText);
+                    if (newEraMemoData["memos"].length == 0) { 
+                        memoButton.style.display = "none";
+                        displayConstructionMessage();
+                    } else { 
+                        eraMemoData[era] = newEraMemoData["memos"];
+                        loadEraPages(era); 
+                    }
+                } else { displayErrorMessage(); }
+            } else { displayLoadingMessage(); }
+        }
+        httpRequest.open("GET", `/api/${era}`, true);
+        httpRequest.send();
+    } else { loadEraPages(era); }
+}
+
+let currentTabIndex = 0;
+const eraColors = {"kodai": "var(--red)", "chusei": "var(--sun)", "kinsei": "var(--lime)", "kindai": "var(--sea)", "gendai": "var(--ice)" };
 
 // PAGE TAB ORGANIZATION ===========================================================
 

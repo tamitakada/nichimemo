@@ -29,12 +29,17 @@ def get_memo_data(era):
 @app.route("/search")
 def get_search():
     query = request.args['q']
-    memos = dp.get_parsed_data(database.find_memos_matching_query(query.upper()))
+    sorted_search = dp.get_sorted_data(database.find_memos_matching_query(query.upper()))
+    memos = dp.get_parsed_data(sorted_search["kodai"])
+    initial_memo_data = {}
+    for key in sorted_search.keys():
+        initial_memo_data[key] = dp.get_stringified_data(sorted_search[key], True)
 
     return render_template(
-        "index.html",
+        "search.html",
         memos=memos,
-        query=query
+        query=query,
+        initial_memo_data=initial_memo_data
     )
 
 if __name__ == "__main__":

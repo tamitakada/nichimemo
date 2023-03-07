@@ -3,10 +3,8 @@
 <head>
     <title>常灯日本史メモ</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/memo.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/test.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/nichimemo-logo.png') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,24 +31,9 @@
     </div>
 
     <footer style="border-radius: 20px; margin-top: 30px; padding: 30px 20px; background-color: var(--lightNavy);">
-        <div class="flex-row" style="align-items: flex-start; justify-content: center;">
-            <div class="center-col" style="align-items: flex-start;">
-                <h4>時代区分</h4>
-                <div class="flex-col">
-                    <a href="/kodai">古代</a>
-                    <a href="/chusei">中世</a>
-                    <a href="/kinsei">近世</a>
-                    <a href="/kindai">近代</a>
-                    <a href="/gendai">現代</a>
-                </div>
-            </div>
-
-            <div class="center-col" style="align-items: flex-start; margin-left: 40px;">
-                <h4>サポート</h4>
-                <div class="flex-col">
-                    <a href="https://forms.gle/A2gKJE6PLWrh3Q6b7">お問い合わせ</a>
-                </div>
-            </div>
+        <div class="center-col">
+            <h4>サポート</h4>
+            <a href="https://forms.gle/A2gKJE6PLWrh3Q6b7">お問い合わせ</a>
         </div>
         
         <p style="padding-top: 30px; color: white; opacity: 20%; text-align: center;">
