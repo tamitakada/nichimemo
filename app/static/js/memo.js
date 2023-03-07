@@ -73,6 +73,7 @@ const eraPageContainer = document.getElementsByClassName("era-page-container")[0
 function clearTabsAndPages() {
     currentTabIndex = 0;
     isMemoOpen = true;
+    loadedMemos = [];
 
     const currentPages = eraPageContainer.querySelectorAll(".page");
     for (let i = currentPages.length - 1; i >= 0; i--) {
@@ -138,6 +139,7 @@ function loadEraPages(era) {
         }
 
         addTabs();
+        loadAllDiagramsForMemo(0);
     }
 
     currentEra = era;

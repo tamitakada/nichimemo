@@ -1,9 +1,8 @@
-const memo = document.getElementsByClassName("memo");
-
 let loadedMemos = [];
 let selectedNode = null;
 
 function loadAllDiagrams() {
+    const memo = document.getElementsByClassName("memo");
     for (let i = 0; i < memo.length; i++) {
         const diagrams = memo[i].getElementsByClassName("hierarchy");
         for (let j = 0; j < diagrams.length; j++) loadDiagram(diagrams[j]);
@@ -12,6 +11,7 @@ function loadAllDiagrams() {
 }
 
 function loadAllDiagramsForMemo(memoIndex) {
+    const memo = document.getElementsByClassName("memo");
     if (!loadedMemos.includes(memoIndex)) {
         const diagrams = memo[memoIndex].getElementsByClassName("hierarchy");
         for (let i = 0; i < diagrams.length; i++) loadDiagram(diagrams[i]);
