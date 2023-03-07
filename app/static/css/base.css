@@ -47,6 +47,16 @@ li { text-align: left; }
     display: inline-block;
 }
 
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    align-items: center; 
+    background-color: var(--lightNavy); 
+    margin-bottom: 20px; padding: 20px; 
+    border-radius: 20px;
+}
+
 footer a {
     color: white;
     font-size: 14px;
@@ -130,3 +140,8 @@ input::placeholder {
 }
 .text-button:hover::after { color: var(--hover-text-color); }
 .text-button:hover::before { width: 100%; }
+
+@media only screen and (max-width: 870px) {
+    nav { flex-direction: column; }
+    nav .flex-row { margin-bottom: 20px; }
+}
