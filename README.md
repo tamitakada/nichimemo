@@ -1,6 +1,6 @@
 # 常灯日本史メモ | Joto Nihonshi Memo (Nichimemo)
 
-[常灯日本史メモのサイト | Access here!](https://joto-nichimemo.vercel.app/)
+[常灯日本史メモのサイト | Access here!](https://www.nichimemo.com/)
 
 ## ローカルインストールの仕方 | To Launch Locally
 
