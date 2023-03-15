@@ -35,7 +35,7 @@ html, body { box-sizing: border-box; height: 100%; background-color: var(--navy)
 
 @font-face { font-family: Hina; src: url("fonts/HinaMincho-Regular.woff"); }
 
-h3 { font-size: 20px; writing-mode: vertical-lr; }
+h3 { font-size: 20px; writing-mode: vertical-rl; text-align: start; }
 h4 { color: white; padding-bottom: 10px; opacity: 40%; }
 p, ruby { text-align: left; padding: 0; margin: 0; }
 

@@ -52,10 +52,10 @@ mark { background-color: var(--sun); color: var(--navy); }
     border-radius: 5px;
     box-shadow: 0 0 5px var(--tooltip-color);
 
-    opacity: 0;
-    transition: opacity 0.3s;
+    transform: scaleY(0);
+    transition: transform 0.3s;
 }
-.tooltip-text:hover::after { opacity: 1; }
+.tooltip-text:hover::after { transform: none; }
 
 /* MEMO TABLE STYLES ================================================= */
 
