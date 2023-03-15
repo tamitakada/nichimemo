@@ -27,7 +27,7 @@ def get_single_stringified_data(memo, tick_keys):
 
 def get_stringified_data(memos, tick_keys):
     proper_quote = "\\\"" if tick_keys else "\""
-    if len(memos) > 1:
+    if len(memos) >= 1:
         all_memo_data = "{" + proper_quote + "memos" + proper_quote + ": ["
         for i in range(len(memos)):
             all_memo_data += get_single_stringified_data(memos[i], tick_keys)
