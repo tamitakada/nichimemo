@@ -9,7 +9,7 @@ app = Flask(__name__)
 def get_home():
     initial_search = database.find_all_memos_in_era("古代")
     memos = dp.get_parsed_data(initial_search)
-    initial_memo_data = dp.get_stringified_data(initial_search, True);
+    initial_memo_data = dp.get_stringified_data(initial_search, True)
     return render_template("index.html", memos=memos, initial_memo_data=initial_memo_data)
 
 @app.route("/api/<era>", methods=["GET"])
