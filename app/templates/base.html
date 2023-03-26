@@ -24,7 +24,11 @@
             <form action="/search" >
                 <input type="text" placeholder="調べたい人物・出来事などを入力" autocomplete="off" name="q" {% if query|length > 0 %} value="{{ query }}" {% endif %}></input>
             </form>
-        </nav>        
+        </nav>
+        
+        <div class="banner center-col" style="background-color: var(--sun);">
+            <img src="{{  url_for('static', filename='images/chusei-celebration.svg') }}" style="max-height: 200px; max-width: 100%; object-fit: contain;" />
+        </div>
 
         {% block content %}{% endblock %}
 
