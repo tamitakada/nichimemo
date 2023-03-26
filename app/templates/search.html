@@ -42,7 +42,7 @@
         </div>
 
         <div id="era-container" style="position: relative;">
-            <div id="message" class="center-col" style="display: none;">
+            <div id="message" class="center-col" style="{% if memos[0]|length > 0 %}display: none;{% endif %}">
                 <h2 id="message-face" class="message-face-text">(◉.◉)</h2>
                 <h2 id="message-body" class="message-text">該当する項目は見つかりませんでした</h2>
             </div>
@@ -51,7 +51,7 @@
                 <img src="{{ url_for('static', filename='images/search.svg') }}" style="width: 26px;" />
             </div>
 
-            <div class="era-page-container">
+            <div class="era-page-container" style="{% if memos[0]|length == 0 %}display: none;{% endif %}">
                 {% for memo in memos %}
                 <div class="page" {% if loop.index == 1 %}style="flex: 0 0 550px;"{% endif %}>
                     <div class="memo">{{ memo["content"]|safe }}</div>
@@ -69,12 +69,13 @@
                 {% endfor %}
             </div>
 
-            <div class="tab-container flex-row">
+            <div class="tab-container flex-row" style="{% if memos[0]|length == 0 %}display: none;{% endif %}">
+                {% for memo in memos %}
+                {% if loop.index == 1 %}
                 <div class="tab" style="color: var(--navy); border: 3px solid var(--navy); background-color: {{ memos[0]['era_color'] }}; box-shadow: 0 0 10px {{ memos[0]['era_color'] }};">
                     <h3>{{ memos[0]["title"] }}</h3>
                 </div>
-                {% for memo in memos %}
-                {% if loop.index > 1 %}
+                {% else %}
                 <div class="tab" style="color: {{ memo['era_color'] }}; border-color: {{ memo['era_color'] }};">
                     <h3>{{ memo["title"] }}</h3>
                 </div>

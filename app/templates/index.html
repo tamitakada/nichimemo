@@ -2,9 +2,8 @@
 
 {% block content %}
 
-    <div class="banner center-col" style="background-image: url({{ url_for('static', filename='images/confetti-tile.svg') }});">
-        <h1 class="banner-title">古代史メモ</h1>
-        <h1 class="banner-subtitle">完成</h1>
+    <div class="banner center-col" style="background-color: var(--sun);">
+        <img src="{{  url_for('static', filename='images/chusei-celebration.svg') }}" style="max-height: 200px; max-width: 100%; object-fit: contain;" />
     </div>
 
     <div class="flex-row" style="align-items: stretch;">
@@ -76,11 +75,12 @@
             </div>
 
             <div class="tab-container flex-row">
+                {% for memo in memos %}
+                {% if loop.index == 1 %}
                 <div class="tab" style="color: var(--navy); border: 3px solid var(--navy); background-color: {{ memos[0]['era_color'] }}; box-shadow: 0 0 10px {{ memos[0]['era_color'] }};">
                     <h3>{{ memos[0]["title"] }}</h3>
                 </div>
-                {% for memo in memos %}
-                {% if loop.index > 1 %}
+                {% else %}
                 <div class="tab" style="color: {{ memo['era_color'] }}; border-color: {{ memo['era_color'] }};">
                     <h3>{{ memo["title"] }}</h3>
                 </div>

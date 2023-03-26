@@ -12,7 +12,7 @@ function loadAllDiagrams() {
 
 function loadAllDiagramsForMemo(memoIndex) {
     const memo = document.getElementsByClassName("memo");
-    if (!loadedMemos.includes(memoIndex)) {
+    if (memo.length > 0 && !loadedMemos.includes(memoIndex)) {
         const diagrams = memo[memoIndex].getElementsByClassName("hierarchy");
         for (let i = 0; i < diagrams.length; i++) loadDiagram(diagrams[i]);
         loadedMemos.push(memoIndex);
