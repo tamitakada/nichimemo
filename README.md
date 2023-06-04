@@ -1,6 +1,6 @@
 # 常灯日本史メモ | Joto Nihonshi Memo (Nichimemo)
 
-[常灯日本史メモのサイト | Access here!](https://www.nichimemo.com/)
+[常灯日本史メモへ | Access here!](https://www.nichimemo.com/)
 
 ## ローカルインストールの仕方 | To Launch Locally
 
@@ -20,7 +20,7 @@ This repository does not contain a prefilled database. Refer to the [official we
 常灯日本史メモは日本史を簡単に説明した記事を無料で提供しているウェブサイトです。  
 Nichimemo is a Flask app hosting a collection of notes on Japanese history. 
 
-記事はすべて以下の本の情報をもとにして書かれています。  
+記事はすべて以下の本の情報をもとに書かれています。  
 All notes are based off of the following sources:
 
 1. 山本博文 『〔東大流〕 流れをつかむ すごい！ 日本史講義』 PHP研究所、二〇二〇年  
